@@ -1,7 +1,7 @@
 package processing.textStructure;
 
-import java.io.RandomAccessFile;
-import java.io.Serializable;
+import java.io.*;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,7 +35,7 @@ public class Block implements Serializable {
 		if (entryName==null)
 			throw new Exception("called getEntryName on a block without setting it");
 		return entryName;
-	
+
 	}
 
 	void setEntryName(String entryName){
@@ -63,10 +63,8 @@ public class Block implements Serializable {
 	 * Convert an abstract block into a string
 	 * @return  string representation of the block (the entire text of the block from start to end indices)
 	 */
-	@Override
 	public String toString() {
-		return null;
-
+		return " ";
 	}
 	
 	/**
@@ -81,7 +79,7 @@ public class Block implements Serializable {
 	 * @return the RAF object for this block
 	 */
 	public RandomAccessFile getRAF() {
-		return null;
+		return inputFile;
 	}
 	
 	/**
@@ -89,6 +87,6 @@ public class Block implements Serializable {
 	 * @return  String of all metadata.
 	 */
 	public List<String> getMetadata() {
-		return null;
+		return new LinkedList<>();
 	}
 }

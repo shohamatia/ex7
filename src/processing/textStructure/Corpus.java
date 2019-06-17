@@ -1,4 +1,5 @@
 package processing.textStructure;
+import com.sun.deploy.nativesandbox.NativeSandboxBroker;
 import processing.parsingRules.IparsingRule;
 import processing.parsingRules.STmovieParsingRule;
 import processing.parsingRules.STtvSeriesParsingRule;
@@ -7,6 +8,7 @@ import utils.MD5;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.util.*;
 
@@ -134,10 +136,8 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * if it was loaded from cache.
 	 */
 	public void updateRAFs() {
-		for(Entry entry: entryList){
-		    for (Block block : entry){
+		for(Entry: entryList){
 
-            }
         }
 	}
 
