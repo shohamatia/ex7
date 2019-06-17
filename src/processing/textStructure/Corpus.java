@@ -136,10 +136,8 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * if it was loaded from cache.
 	 */
 	public void updateRAFs() {
-		for(Entry entry: entryList){
-		    for (Block block : entry){
-                new RandomAccessFile();
-            }
+		for(Entry: entryList){
+
         }
 	}
 
