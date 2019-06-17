@@ -8,21 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Configuration {
-    String corpusTitle;
-    String corpusPathAddress;
-    String indexerTitle;
-    String indexerTypeString;
-    String parseTitle;
-    String parseRuleString;
-    String queryTitle;
-    String query;
-    List<String> lines;
-    Boolean hasQuery;
-    Path path;
-    Aindexer.IndexTypes indexType;
-    IparsingRule.ParserTypes parserType;
-    static String line0 = "CORPUS";
-    static String line2 = "INDEXER";
+    private String queryTitle;
+    private String query;
+    private List<String> lines;
+    private Boolean hasQuery;
+    private Path path;
+    private Aindexer.IndexTypes indexType;
+    private IparsingRule.ParserTypes parserType;
+    private static String line0 = "CORPUS";
+    private static String line2 = "INDEXER";
     static HashMap<String, Aindexer.IndexTypes> indexTypesHashMap = new HashMap<>() {{
         put("DICT", Aindexer.IndexTypes.DICT);
         put("NAIVE", Aindexer.IndexTypes.NAIVE);
@@ -52,12 +46,12 @@ public class Configuration {
             throw e;
         }
 
-        corpusTitle = lines.get(0);
-        corpusPathAddress = lines.get(1);
-        indexerTitle = lines.get(2);
-        indexerTypeString = lines.get(3);
-        parseTitle = lines.get(4);
-        parseRuleString = lines.get(5);
+        String corpusTitle = lines.get(0);
+        String corpusPathAddress = lines.get(1);
+        String indexerTitle = lines.get(2);
+        String indexerTypeString = lines.get(3);
+        String parseTitle = lines.get(4);
+        String parseRuleString = lines.get(5);
         if(lines.size()==8){
             hasQuery = true;
             queryTitle = lines.get(6);
@@ -127,5 +121,9 @@ public class Configuration {
 
     Boolean hasQuery(){
         return hasQuery;
+    }
+
+    Path getPath() {
+        return path;
     }
 }
