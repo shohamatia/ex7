@@ -5,19 +5,20 @@ import processing.textStructure.WordResult;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
  * The main program - A text searching module that indexes and queries large corpuses for strings or word groups
  */
 public class TextSearcher {
-    static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single argument.";
-    static String INVALID_INPUT_ARGUMENTS_FILE_ERROR = "The input was an invalid file.";
+    private final static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single argument.";
+    private final static String INVALID_INPUT_ARGUMENTS_FILE_ERROR = "The input was an invalid file.";
 
     /**
      * Main method. Reads and parses a command file and if a query exists, prints the results.
      *
-     * @param args
+     * @param args - program arguments.
      */
     public static void main(String[] args) {
         List<String> lines;
@@ -50,7 +51,7 @@ public class TextSearcher {
             throw new IOException();
         }
         String path_name = args[0];
-        Path path = Path.of(path_name);
+        Path path = Paths.get(path_name);
         return Files.readAllLines(path);
     }
 

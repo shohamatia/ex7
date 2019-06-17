@@ -26,6 +26,9 @@ public class Entry implements Iterable<Block>, Serializable {
 		try {
 			inputFile = new RandomAccessFile(file, "rw");
 			blocksList = parseRule.parseFile(inputFile);
+			for (Block block: blocksList){
+				block.setEntryName(filePath);
+			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}

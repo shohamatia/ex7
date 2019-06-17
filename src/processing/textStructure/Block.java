@@ -3,6 +3,7 @@ package processing.textStructure;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represents an arbitrary block of text within a file
@@ -11,7 +12,7 @@ public class Block implements Serializable {
 	public static final long serialVersionUID = 1L;
 	private String entryName;
 	private long endIdx;
-	transient RandomAccessFile inputFile;
+	private transient RandomAccessFile inputFile;
 	private long startIdx;
 
 	/**
@@ -35,13 +36,11 @@ public class Block implements Serializable {
 		if (entryName==null)
 			throw new Exception("called getEntryName on a block without setting it");
 		return entryName;
-
 	}
 
 	void setEntryName(String entryName){
 		this.entryName = entryName;
 	}
-
 
 
 ///////// getters //////////
@@ -64,6 +63,16 @@ public class Block implements Serializable {
 	 * @return  string representation of the block (the entire text of the block from start to end indices)
 	 */
 	public String toString() {
+		try {
+			List<Character> characters = new LinkedList<>();
+			this.inputFile.seek(this.startIdx);
+			while (this.inputFile.getFilePointer() < this.endIdx){
+				characters.add(this.inputFile.readChar());
+			}
+			return characters.stream().map(String::valueOf).collect(Collectors.joining());
+		} catch (IOException e) {
+			System.out.println(" ");
+		}
 		return " ";
 	}
 	
