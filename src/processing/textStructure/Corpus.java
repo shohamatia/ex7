@@ -1,5 +1,6 @@
 package processing.textStructure;
-//this is a new comment
+
+
 import processing.parsingRules.IparsingRule;
 import processing.parsingRules.STmovieParsingRule;
 import processing.parsingRules.STtvSeriesParsingRule;
