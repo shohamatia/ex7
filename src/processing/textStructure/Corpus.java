@@ -136,7 +136,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * if it was loaded from cache.
 	 */
 	public void updateRAFs() {
-		for(Entry: entryList){
+		for(Entry entry: entryList){
 
         }
 	}
