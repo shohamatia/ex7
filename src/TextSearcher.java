@@ -1,3 +1,7 @@
+import processing.searchStrategies.NaiveSearch;
+import processing.textStructure.Corpus;
+import processing.textStructure.WordResult;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,17 +24,29 @@ public class TextSearcher {
         try {
             lines = checkLegitFile(args);
             Configuration conf = new Configuration(lines);
+            testConfiguration(conf);
+            Corpus origin = new Corpus(conf.getCorpusPathAddress(), conf.getParseRuleString());
+            NaiveSearch naiveSearch = new NaiveSearch(origin);
+            if (!conf.hasQuery()) {
+                return;
+            }
+            try {
+                String query = conf.getQuery();
+                List<WordResult> results = naiveSearch.search(query);
+                results.forEach(System.out::println);
+            } catch (IllegalStateException e) {
+                System.out.println("Something went wrong");
+            }
         } catch (IOException e) {
-            System.err.println(INVALID_INPUT_ARGUMENTS_FILE_ERROR);
+            System.out.println(INVALID_INPUT_ARGUMENTS_FILE_ERROR);
             return;
         }
-        for (String line:lines)
-            System.out.println(line);
+        //lines.forEach(System.out::println);
     }
 
-    private static List<String> checkLegitFile(String[] args) throws IOException{
+    private static List<String> checkLegitFile(String[] args) throws IOException {
         if (args.length != 1) {
-            System.err.println(WRONG_NUM_OF_ARGS_ERROR);
+            System.out.println(WRONG_NUM_OF_ARGS_ERROR);
             throw new IOException();
         }
         String path_name = args[0];
@@ -38,7 +54,16 @@ public class TextSearcher {
         return Files.readAllLines(path);
     }
 
+    static void testConfiguration(Configuration conf) {
+        System.out.println(conf.getIndexType().toString());
+        System.out.println(conf.getParserType().toString());
+        System.out.println(conf.getPath().toString());
+        try {
+            System.out.println(conf.getQuery());
+        } catch (Exception e) {
+        }
 
+    }
 
 
 }

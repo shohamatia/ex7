@@ -1,5 +1,4 @@
 package processing.textStructure;
-import com.sun.deploy.nativesandbox.NativeSandboxBroker;
 import processing.parsingRules.IparsingRule;
 import processing.parsingRules.STmovieParsingRule;
 import processing.parsingRules.STtvSeriesParsingRule;
@@ -136,7 +135,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * if it was loaded from cache.
 	 */
 	public void updateRAFs() {
-		for(Entry: entryList){
+		for(Entry entry: entryList){
 
         }
 	}
