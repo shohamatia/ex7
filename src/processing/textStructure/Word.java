@@ -52,7 +52,7 @@ public class Word implements Serializable {
 	 * @return  The word in String format.
 	 */
 	protected String extractWord(){
-	
+		return null;
 	}
 
 	/**

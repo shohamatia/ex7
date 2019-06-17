@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Block implements Serializable {
 	public static final long serialVersionUID = 1L;
-
+	private String entryName;
 	private long endIdx;
 	transient RandomAccessFile inputFile;
 	private long startIdx;
@@ -31,8 +31,15 @@ public class Block implements Serializable {
 	 * The filename from which this block was extracted
 	 * @return  filename
 	 */
-	public String getEntryName(){
+	public String getEntryName()throws Exception{
+		if (entryName==null)
+			throw new Exception("called getEntryName on a block without setting it");
+		return entryName;
 	
+	}
+
+	void setEntryName(String entryName){
+		this.entryName = entryName;
 	}
 
 
@@ -58,6 +65,7 @@ public class Block implements Serializable {
 	 */
 	@Override
 	public String toString() {
+		return null;
 
 	}
 	
@@ -73,7 +81,7 @@ public class Block implements Serializable {
 	 * @return the RAF object for this block
 	 */
 	public RandomAccessFile getRAF() {
-
+		return null;
 	}
 	
 	/**
@@ -81,6 +89,6 @@ public class Block implements Serializable {
 	 * @return  String of all metadata.
 	 */
 	public List<String> getMetadata() {
-
+		return null;
 	}
 }

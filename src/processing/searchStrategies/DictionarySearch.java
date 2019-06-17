@@ -14,7 +14,7 @@ public class DictionarySearch implements IsearchStrategy {
 
 	@Override
 	public List<? extends WordResult> search(String query) {
-	
+		return null;
 	}
 	
 

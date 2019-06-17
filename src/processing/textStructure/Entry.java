@@ -23,7 +23,7 @@ public class Entry implements Iterable<Block>, Serializable {
 	 */
 	@Override
     public Iterator<Block> iterator() {
-    
+    	return null;
     }
 
 	

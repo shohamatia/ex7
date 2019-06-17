@@ -53,7 +53,8 @@ public class WordResult {
 	 * @throws IOException
 	 */
 	public String resultToString() throws IOException {
-	
+	    return null;
+
     }
 
 

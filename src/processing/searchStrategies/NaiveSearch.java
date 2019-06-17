@@ -14,6 +14,7 @@ public class NaiveSearch implements IsearchStrategy {
 	
 	@Override
 	public List<WordResult> search(String query) {
+		return null;
 	
 	}
 

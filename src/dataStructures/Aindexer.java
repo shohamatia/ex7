@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 
 /**
  * The abstract class describing the necessary methods and common implementations of all indexing data structures.
- * @param <T>   The search stratagy used by this indexing engine. Can be any class that implements the
+ * @param <T>   The search strategy used by this indexing engine. Can be any class that implements the
  *           IsearchStrategy interface.
  */
 public abstract class Aindexer<T extends IsearchStrategy> {

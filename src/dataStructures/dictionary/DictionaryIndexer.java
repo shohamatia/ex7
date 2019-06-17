@@ -23,7 +23,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 	 * @param origin    the Corpus to be indexed by this DS.
 	 */
 	public DictionaryIndexer(Corpus origin) {
-	
+		super(origin);
 	}
 
 
@@ -48,13 +48,13 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 
 	@Override
 	public IparsingRule getParseRule() {
-	
+		return null;
 	}
 
 	
 	@Override
 	public DictionarySearch asSearchInterface() {
-	
+		return null;
 	}
 
 

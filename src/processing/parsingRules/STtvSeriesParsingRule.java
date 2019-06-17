@@ -18,14 +18,17 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 
 	@Override
 	public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
-
+		return null;
 	}
 
 	@Override
 	public List<Block> parseFile(RandomAccessFile inputFile) {
+		return null;
 	}
 
 	@Override
 	public void printResult(WordResult wordResult)  {
+
+	}
 
 }
