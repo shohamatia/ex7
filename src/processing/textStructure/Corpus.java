@@ -1,6 +1,4 @@
 package processing.textStructure;
-
-
 import processing.parsingRules.IparsingRule;
 import processing.parsingRules.STmovieParsingRule;
 import processing.parsingRules.STtvSeriesParsingRule;
@@ -28,6 +26,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 		name = parserName;
 		parsingFactory();
 		entryList = new LinkedList<>();
+		paths = new ArrayList<>();
 
 		corpusPath = path;
 		File source = new File(getPath());
@@ -79,7 +78,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * The path to the corpus folder
 	 * @return A String representation of the absolute path to the corpus folder
 	 */
-	public String getPath() {
+	private String getPath() {
 		return corpusPath;
     }
 
@@ -87,7 +86,6 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * Iterate over Entry objects in the Corpus
 	 * @return An entry iterator
 	 */
-	@Override
     public Iterator<Entry> iterator() {
 		return this.entryList.iterator();
     }
@@ -136,7 +134,11 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * if it was loaded from cache.
 	 */
 	public void updateRAFs() {
-		for(Entry entry: entryList){ }
+		for(Entry entry: entryList){
+		    for (Block block : entry){
+
+            }
+        }
 	}
 
 	/** parsing factory, creates an instance of new parsing rule */
