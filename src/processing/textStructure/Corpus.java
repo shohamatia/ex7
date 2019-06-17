@@ -10,17 +10,15 @@ import utils.MD5;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * This class represents a body of works - anywhere between one and thousands of documents
  * sharing the same structure and that can be parsed by the same parsing rule.
  */
-public class Corpus implements Iterable<processing.textStructure.Entry>, Serializable {
+public class Corpus implements Iterable<Entry>, Serializable {
 	public static final long serialVersionUID = 1L;
-    private List<processing.textStructure.Entry> entryList;
+    private List<Entry> entryList;
     private IparsingRule parsingRule;
     private String name;
     private String corpusPath;
@@ -29,6 +27,7 @@ public class Corpus implements Iterable<processing.textStructure.Entry>, Seriali
     public Corpus(String path, String parserName) throws IOException {
 		name = parserName;
 		parsingFactory();
+		entryList = new LinkedList<>();
 
 		corpusPath = path;
 		File source = new File(getPath());
@@ -61,8 +60,7 @@ public class Corpus implements Iterable<processing.textStructure.Entry>, Seriali
 				}
 			}
 			else {
-				processing.textStructure.Entry entry = new
-						processing.textStructure.Entry(check.getPath(), parsingRule);
+				Entry entry = new Entry(check.getPath(), parsingRule);
 				entryList.add(entry);
 				paths.add(check.getPath());
 			}
@@ -90,7 +88,7 @@ public class Corpus implements Iterable<processing.textStructure.Entry>, Seriali
 	 * @return An entry iterator
 	 */
 	@Override
-    public Iterator<processing.textStructure.Entry> iterator() {
+    public Iterator<Entry> iterator() {
 		return this.entryList.iterator();
     }
 
@@ -113,7 +111,9 @@ public class Corpus implements Iterable<processing.textStructure.Entry>, Seriali
 		return str.toString();
     }
 
-    /** return the check some of a specific file */
+    /**
+     * return the checksum of a specific file
+     */
     private StringBuilder getFileChecksum(String path){
 		StringBuilder stringBuilder = new StringBuilder();
 		final Scanner s = new Scanner(path);
@@ -136,7 +136,7 @@ public class Corpus implements Iterable<processing.textStructure.Entry>, Seriali
 	 * if it was loaded from cache.
 	 */
 	public void updateRAFs() {
-		for(processing.textStructure.Entry entry: entryList){ }
+		for(Entry entry: entryList){ }
 	}
 
 	/** parsing factory, creates an instance of new parsing rule */
