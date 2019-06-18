@@ -1,0 +1,44 @@
+scene title
+(?<scene_number>\d+)\s+(?<scene_name>.*?)\s+\k<scene_number>
+
+credits
+^\s+(?<what_is_by>\w+) by:\s*?(?:\r\n?|\n)\s+(?<by_whom>(?:[^\r\n]+)+)
+credit splitter
+((?:\w+\s)+)|((?:\w+\s)+\s+&\s+((?:\w+\s)+))
+
+SPEAKER
+(?:^\s+)(?<name>[A-Z]+)(?:$|(?:'S)?\sVOICE)
+
+=================== MOVIE ===================
+SPEAKER
+^\s{43}((?:\S+\s))+
+
+SCENE EXTRACTOR
+(?m)(?<scene_number>\d+)\s+(?<scene_name>.*?)\s+\k<scene_number>\R(\s{19}.*)+\R
+
+SCENE_HEADER
+^\s+(?<SCENE_NUM>\d+)\w?\s+(?<SCENE_TITLE>[^\r\n]+?)?\s+\k<SCENE_NUM>\n
+
+=================== TV EPISODE ===================
+HEADER
+        (?m)\A\s+STAR TREK: THE NEXT GENERATION\s+"(?<episode_title>[^\"]+)"\s+([^\r\n])*by\s+(?<by_1>[^\r\n]+)\s+(?:and\s+(?<by_2>[^\r\n]+))*\
+
+    v2
+        (?mx)\A\s+STAR\ T REK:\ THE\ NEXT\ GENERATION\s+" # initial space and indicative text
+        (?<episode_title>[^\"]+)"   # episode title, wrapped by quote marks
+        \s+
+        (?:# credits start
+        [^\r\n]*by\s+
+        (?<by_1>[^\r\n]+)\s+    # by whom
+        (?:and\s+
+        (?<by_2>[^\r\n]+)+)\s+)+# and could repeat
+
+
+SCENE
+    OLD
+        (?<scene_number>\d+)\s+(?<scene_name>[^\r\n]+)\R
+    v2 \\ todo "continued"
+        (?m)^(?<scene_number>\d+)\s+(?<scene_name>[^\r\n]+)\R.*?(?=\d+\s+|\sTHE END)
+
+CHARACTERS
+^\t{5}(?<character>[^\t\r\n]+)[\r\n]

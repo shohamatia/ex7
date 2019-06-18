@@ -14,6 +14,7 @@ public class Block implements Serializable {
 	private long endIdx;
 	private transient RandomAccessFile inputFile;
 	private long startIdx;
+	private LinkedList<String> metaData = new LinkedList<>();
 
 	/**
 	 * Constructor
@@ -71,9 +72,10 @@ public class Block implements Serializable {
 			}
 			return characters.stream().map(String::valueOf).collect(Collectors.joining());
 		} catch (IOException e) {
-			System.out.println(" ");
+			System.out.println("file reading error");
+			return " ";
+			///TODO
 		}
-		return " ";
 	}
 	
 	/**
@@ -81,9 +83,9 @@ public class Block implements Serializable {
 	 * @param metaData A list containing metadata entries related to this block
 	 */
 	public void setMetadata(List<String> metaData) {
+		this.metaData = new LinkedList<>(metaData);
 	}
-	
-	
+
 	/**
 	 * @return the RAF object for this block
 	 */
@@ -96,6 +98,6 @@ public class Block implements Serializable {
 	 * @return  String of all metadata.
 	 */
 	public List<String> getMetadata() {
-		return new LinkedList<>();
+		return this.metaData;
 	}
 }

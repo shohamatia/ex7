@@ -1,9 +1,6 @@
 package processing.textStructure;
 
 import processing.parsingRules.IparsingRule;
-import processing.parsingRules.STmovieParsingRule;
-import processing.parsingRules.STtvSeriesParsingRule;
-import processing.parsingRules.SimpleParsingRule;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,29 +14,33 @@ import java.util.List;
  */
 public class Entry implements Iterable<Block>, Serializable {
 	public static final long serialVersionUID = 1L;
-	private transient RandomAccessFile inputFile;
 	private List<Block> blocksList;
+	private String path;
+
+	String getPath(){
+	    return this.path;
+    }
 
 
 	public Entry(String filePath, IparsingRule parseRule) {
-		File file = new File(filePath);
+	    this.path = filePath;
+		File file = new File(this.path);
 		try {
-			inputFile = new RandomAccessFile(file, "rw");
+			RandomAccessFile inputFile = new RandomAccessFile(file, "rw");
 			blocksList = parseRule.parseFile(inputFile);
 			for (Block block: blocksList){
-				block.setEntryName(filePath);
+				block.setEntryName(this.path);
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
+			///todo
 		}
 	}
-
 
 	/**
 	 * Iterate over Block objects in the Entry
 	 * @return a block iterator
 	 */
-	@Override
 	public Iterator<Block> iterator() {
 		return blocksList.iterator();
 	}

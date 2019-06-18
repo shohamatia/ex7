@@ -5,10 +5,7 @@ import processing.parsingRules.STtvSeriesParsingRule;
 import processing.parsingRules.SimpleParsingRule;
 import utils.MD5;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -71,7 +68,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * This method populates the Block lists for each Entry in the corpus.
 	 */
 	public void populate(){
-    
+    	///TODO
     }
     
 
@@ -134,9 +131,17 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * Update the RandomAccessFile objects for the Entries in the corpus,
 	 * if it was loaded from cache.
 	 */
-	public void updateRAFs() {
-		for(Entry entry: entryList){
-
+	public void updateRAFs() throws ClassNotFoundException {
+		for(Entry entry: entryList) {
+            FileInputStream file = null;
+            File file_old = null;
+            try {
+                file = new FileInputStream(entry.getPath());
+                ObjectInputStream in = new ObjectInputStream(file);
+                file_old = (File) in.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 	}
 
