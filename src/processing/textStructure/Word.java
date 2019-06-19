@@ -1,6 +1,11 @@
 package processing.textStructure;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Wrapper class for a single word containing relevant attributes for distance calculation and string extraction from
@@ -52,7 +57,19 @@ public class Word implements Serializable {
 	 * @return  The word in String format.
 	 */
 	protected String extractWord(){
-		return null;
+		RandomAccessFile raf = this.srcBlk.getRAF();
+		String word = " ";
+		List<Character> wordChars = new LinkedList<>();
+		try {
+			raf.seek(this.srcBlkOffset);
+			for (int i = 0; i < this.length; i++){
+				wordChars.add(raf.readChar());
+			}
+			word = wordChars.stream().map(String::valueOf).collect(Collectors.joining());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return word;
 	}
 
 	/**

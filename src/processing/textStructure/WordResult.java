@@ -49,7 +49,8 @@ public class WordResult {
 
 	/**
 	 * Method for printing the result
-	 * @return The result representation as defined by the "printing results" requirement in the exercise instructions.
+	 * @return The result representation as defined by the "printing results" requirement in the exercise
+     * instructions.
 	 * @throws IOException
 	 */
 	public String resultToString() throws IOException {
