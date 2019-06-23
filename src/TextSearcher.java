@@ -1,4 +1,7 @@
-import processing.searchStrategies.NaiveSearch;
+import dataStructures.Aindexer;
+import dataStructures.dictionary.DictionaryIndexer;
+import dataStructures.naive.NaiveIndexer;
+import dataStructures.naive.NaiveIndexerRK;
 import processing.textStructure.Corpus;
 import processing.textStructure.WordResult;
 
@@ -21,28 +24,31 @@ public class TextSearcher {
      * @param args - program arguments.
      */
     public static void main(String[] args) {
-        List<String> lines;
+        Configuration conf;
+        Corpus origin;
+
         try {
-            lines = checkLegitFile(args);
-            Configuration conf = new Configuration(lines);
+            List<String> lines = checkLegitFile(args);
+            conf = new Configuration(lines);
             testConfiguration(conf);
-            Corpus origin = new Corpus(conf.getCorpusPathAddress(), conf.getParseRuleString());
-            NaiveSearch naiveSearch = new NaiveSearch(origin);
-            if (!conf.hasQuery()) {
-                return;
-            }
-            try {
-                String query = conf.getQuery();
-                List<WordResult> results = naiveSearch.search(query);
-                results.forEach(System.out::println);
-            } catch (IllegalStateException e) {
-                System.out.println("Something went wrong");
-            }
+
+            origin = new Corpus(conf.getCorpusPathAddress(), conf.getParseRuleString());
         } catch (IOException e) {
             System.out.println(INVALID_INPUT_ARGUMENTS_FILE_ERROR);
             return;
         }
-        //lines.forEach(System.out::println);
+
+
+        Aindexer indexer = getIndexer(conf.getIndexType(),origin);
+        indexer.index();
+
+        if (!conf.hasQuery()) {
+            return;
+        }
+
+        String query = conf.getQuery();
+        List<? extends WordResult> results = indexer.asSearchInterface().search(query);
+        results.forEach(System.out::println);
     }
 
     private static List<String> checkLegitFile(String[] args) throws IOException {
@@ -63,8 +69,18 @@ public class TextSearcher {
             System.out.println(conf.getQuery());
         } catch (Exception e) {
         }
-
     }
 
-
+    static Aindexer getIndexer(Aindexer.IndexTypes indexType, Corpus origin) {
+        switch (indexType) {
+            case DICT:
+                return new DictionaryIndexer(origin);
+//            case NAIVE:
+//                return new NaiveIndexer(origin);
+            case NAIVE_RK:
+                return new NaiveIndexerRK(origin);
+            default:
+                return new NaiveIndexer(origin);
+        }
+    }
 }

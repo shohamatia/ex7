@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Configuration {
-    String corpusTitle;
-    String corpusPathAddress;
-    String indexerTitle;
-    String indexerTypeString;
-    String parseTitle;
-    String parseRuleString;
+    private String corpusTitle;
+    private String corpusPathAddress;
+    private String indexerTitle;
+    private String indexerTypeString;
+    private String parseTitle;
+    private String parseRuleString;
     private String queryTitle;
     private String query;
     private List<String> lines;
@@ -23,18 +23,18 @@ public class Configuration {
     private IparsingRule.ParserTypes parserType;
     private static String line0 = "CORPUS";
     private static String line2 = "INDEXER";
-    static HashMap<String, Aindexer.IndexTypes> indexTypesHashMap = new HashMap<>() {{
+    private static HashMap<String, Aindexer.IndexTypes> indexTypesHashMap = new HashMap<>() {{
         for (Aindexer.IndexTypes AnIndexType : Aindexer.IndexTypes.values())
             put(AnIndexType.toString(), AnIndexType);
 
     }};
-    static String line4 = "PARSE_RULE";
-    static HashMap<String, IparsingRule.ParserTypes> parserTypesHashMap = new HashMap<>() {{
+    private static String line4 = "PARSE_RULE";
+    private static HashMap<String, IparsingRule.ParserTypes> parserTypesHashMap = new HashMap<>() {{
         for (IparsingRule.ParserTypes AParserType : IparsingRule.ParserTypes.values())
             put(AParserType.toString(), AParserType);
     }};
-    static String line6 = "QUERY";
-    static String MISSING_REQUIRED_SECTION_ERROR =
+    private static String line6 = "QUERY";
+    private static String MISSING_REQUIRED_SECTION_ERROR =
             "Error: configuration file does not contain required %s section at line %d.";
 
     Configuration(List<String> lines) throws IOException {
@@ -118,9 +118,9 @@ public class Configuration {
         return parserType;
     }
 
-    String getQuery() throws IllegalStateException {
+    String getQuery() {
         if (!hasQuery)
-            throw new IllegalStateException();
+            return null;
         return query;
     }
 
