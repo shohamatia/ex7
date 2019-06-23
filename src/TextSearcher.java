@@ -20,7 +20,7 @@ public class TextSearcher {
     private final static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single argument.";
     private final static String INVALID_INPUT_ARGUMENTS_FILE_ERROR = "The input was an invalid file.";
     private final static String QUERY_RESULTS = "The top 10 results for query '%s' are:";
-    private final static String RESULTS_SEPARATOR = String.join("", Collections.nCopies(256, "="));
+
 
 
     /**
@@ -68,7 +68,7 @@ public class TextSearcher {
             catch (IOException e){
                 System.out.println("problem!!!!");
             }
-            System.out.println(RESULTS_SEPARATOR);
+
         }
     }
 

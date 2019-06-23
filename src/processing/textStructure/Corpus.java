@@ -20,6 +20,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
     private String corpusPath;
     private List<String> paths;
 
+
     public Corpus(String path, String parserName) throws IOException {
 		name = parserName;
 		this.createParserRule();
