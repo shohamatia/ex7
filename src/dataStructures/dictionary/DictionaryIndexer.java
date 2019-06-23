@@ -12,6 +12,7 @@ import utils.WrongMD5ChecksumException;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,6 +59,14 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 
         for (Entry entry:origin){
             for (Block block: entry){
+                String blockString = block.toString();
+                m.reset(blockString);
+                while (m.find()){
+                    int key = m.group().hashCode();
+                    if (!dict.containsKey(key))
+                        dict.put(m.group().hashCode(),new LinkedList<>());
+                    dict.get(key).add(null);
+                }
 
             }
         }
