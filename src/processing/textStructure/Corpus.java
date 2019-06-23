@@ -21,7 +21,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
     private List<String> paths;
 	private File source;
 
-    public Corpus(String path, String parserName) throws IOException {
+    public Corpus(String path, String parserName) {
 		name = parserName;
 		this.createParserRule();
 		entryList = new LinkedList<>();
@@ -70,7 +70,6 @@ public class Corpus implements Iterable<Entry>, Serializable {
 		}
 
 		System.out.println("finished populating");
-
 	}
     
 
@@ -133,18 +132,13 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * Update the RandomAccessFile objects for the Entries in the corpus,
 	 * if it was loaded from cache.
 	 */
-	public void updateRAFs() throws ClassNotFoundException {
-//		for(Entry entry: entryList) {
-//            FileInputStream file = null;
-//            File file_old = null;
-//            try {
-//                file = new FileInputStream(entry.getPath());
-//                ObjectInputStream in = new ObjectInputStream(file);
-//                file_old = (File) in.readObject();
-//            } catch (IOException e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
+	public void updateRAFs() {
+		for(Entry entry: entryList) {
+		    String path = entry.getPath();
+		    for (Block block : entry){
+		        block.setRAF(path);
+            }
+        }
 	}
 
 	/** parsing factory, creates an instance of new parsing rule */

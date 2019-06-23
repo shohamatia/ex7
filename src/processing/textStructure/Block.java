@@ -97,6 +97,14 @@ public class Block implements Serializable {
 	public RandomAccessFile getRAF() {
 		return inputFile;
 	}
+
+	void setRAF(String path){
+		try {
+			this.inputFile = new RandomAccessFile(path, "rw");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 	
 	/**
 	 * Get the metadata of the block, if applicable for the parsing rule used
