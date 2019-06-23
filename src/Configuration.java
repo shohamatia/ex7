@@ -4,6 +4,7 @@ import processing.parsingRules.IparsingRule;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,13 +24,15 @@ public class Configuration {
     private IparsingRule.ParserTypes parserType;
     private static String line0 = "CORPUS";
     private static String line2 = "INDEXER";
-    private static HashMap<String, Aindexer.IndexTypes> indexTypesHashMap = new HashMap<>() {{
+    private static HashMap<String, Aindexer.IndexTypes> indexTypesHashMap = new HashMap<String,
+            Aindexer.IndexTypes>() {{
         for (Aindexer.IndexTypes AnIndexType : Aindexer.IndexTypes.values())
             put(AnIndexType.toString(), AnIndexType);
 
     }};
     private static String line4 = "PARSE_RULE";
-    private static HashMap<String, IparsingRule.ParserTypes> parserTypesHashMap = new HashMap<>() {{
+    private static HashMap<String, IparsingRule.ParserTypes> parserTypesHashMap = new HashMap<String,
+            IparsingRule.ParserTypes>() {{
         for (IparsingRule.ParserTypes AParserType : IparsingRule.ParserTypes.values())
             put(AParserType.toString(), AParserType);
     }};
@@ -70,7 +73,7 @@ public class Configuration {
             throw e;
         }
         // check line 1
-        this.path = Path.of(corpusPathAddress);
+        this.path = Paths.get(corpusPathAddress);
         if (!Files.exists(path)) {
             System.out.println("Error: Invalid file path given in line 1 in configuration file.");
             throw e;

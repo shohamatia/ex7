@@ -30,12 +30,16 @@ public class Corpus implements Iterable<Entry>, Serializable {
 		File source = new File(getPath());
 		File[] list = source.listFiles();
 
+		System.out.println("GOT CONSTRUCTOR");
+
 		if(list != null){
 			recursiveFile(list);
 		}
 		else {
 			throw new IOException();
 		}
+
+        System.out.println("END CONSTRUCTOR");
     }
 
         /*
@@ -54,12 +58,12 @@ public class Corpus implements Iterable<Entry>, Serializable {
 				File[] list = check.listFiles();
 				if (list != null) {
 					recursiveFile(list);
-				}
-			}
-			else {
-				Entry entry = new Entry(check.getPath(), parsingRule);
-				entryList.add(entry);
-				paths.add(check.getPath());
+				} else {
+                    System.out.println(9);
+                    Entry entry = new Entry(check.getPath(), parsingRule);
+                    entryList.add(entry);
+                    paths.add(check.getPath());
+                }
 			}
 		}
 	}

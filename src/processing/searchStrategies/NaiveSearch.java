@@ -15,8 +15,6 @@ public class NaiveSearch implements IsearchStrategy {
         this.origin = origin;
     }
 
-
-    @Override
     public List<WordResult> search(String query) {
         List<WordResult> wordResults = new LinkedList<>();
         for (Entry entry : origin) {
