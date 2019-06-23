@@ -64,8 +64,11 @@ public class Corpus implements Iterable<Entry>, Serializable {
                     paths.add(check.getPath());
                 }
 			}
-			else
-			    entryList.add(new Entry(check.getPath(),parsingRule));
+			else {
+                Entry entry = new Entry(check.getPath(), parsingRule);
+                entryList.add(entry);
+                paths.add(check.getPath());
+            }
 		}
 	}
 
@@ -137,17 +140,17 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * if it was loaded from cache.
 	 */
 	public void updateRAFs() throws ClassNotFoundException {
-		for(Entry entry: entryList) {
-            FileInputStream file = null;
-            File file_old = null;
-            try {
-                file = new FileInputStream(entry.getPath());
-                ObjectInputStream in = new ObjectInputStream(file);
-                file_old = (File) in.readObject();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//		for(Entry entry: entryList) {
+//            FileInputStream file = null;
+//            File file_old = null;
+//            try {
+//                file = new FileInputStream(entry.getPath());
+//                ObjectInputStream in = new ObjectInputStream(file);
+//                file_old = (File) in.readObject();
+//            } catch (IOException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
 	}
 
 	/** parsing factory, creates an instance of new parsing rule */

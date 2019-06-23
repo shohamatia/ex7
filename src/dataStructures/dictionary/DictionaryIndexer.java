@@ -17,6 +17,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 	
 	private static final Stemmer STEMMER = new Stemmer();
 	public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
+	private Corpus origin;
 
 	/**
 	 * Basic constructor, sets origin Corpus and initializes backing hashmap
@@ -24,6 +25,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 	 */
 	public DictionaryIndexer(Corpus origin) {
 		super(origin);
+		this.origin = origin;
 	}
 
 

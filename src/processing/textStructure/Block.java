@@ -65,12 +65,12 @@ public class Block implements Serializable {
 	 */
 	public String toString() {
 		try {
-			List<Character> characters = new LinkedList<>();
+			List<Byte> bytes = new LinkedList<>();
 			this.inputFile.seek(this.startIdx);
 			while (this.inputFile.getFilePointer() < this.endIdx){
-				characters.add(this.inputFile.readChar());
+				bytes.add(this.inputFile.readByte());
 			}
-			return characters.stream().map(String::valueOf).collect(Collectors.joining());
+			return String.valueOf(bytes);
 		} catch (IOException e) {
 			System.out.println("file reading error");
 			return " ";

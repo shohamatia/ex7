@@ -44,7 +44,7 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 				String rawBlock = new String(rawBytes);
 				m.reset(rawBlock);
 				while (m.find()) {
-					if (m.end()-m.start() > 1) {
+					if (m.end()- m.start() > 1) {
 						entryBlocks.add(parseRawBlock(inputFile, m.start() + i, m.end() + i));
 					}
 					endOfBlockOffset = m.end();
@@ -57,6 +57,7 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("GOT PARSING");
 		return entryBlocks;
 
 	}
@@ -67,7 +68,7 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 	}
 
 	private String getSplitRegex() {
-		return "(.*\\n\\n){1,5}";
+		return "(.*(\\n|\\r\\n|\\r){2}){1,5}";
 	}
 
 
