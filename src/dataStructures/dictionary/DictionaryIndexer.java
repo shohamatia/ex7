@@ -4,10 +4,13 @@ import dataStructures.Aindexer;
 import processing.parsingRules.IparsingRule;
 import processing.searchStrategies.DictionarySearch;
 import processing.textStructure.Corpus;
+import processing.textStructure.Word;
 import utils.Stemmer;
 import utils.WrongMD5ChecksumException;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * An implementation of the abstract Aindexer class, backed by a simple hashmap to store words and their
@@ -18,6 +21,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     private static final Stemmer STEMMER = new Stemmer();
     public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
     private Corpus origin;
+    private HashMap<Integer, List<Word>> dict;
 
     /**
      * Basic constructor, sets origin Corpus and initializes backing hashmap
@@ -27,6 +31,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     public DictionaryIndexer(Corpus origin) {
         super(origin);
         this.origin = origin;
+        this.dict = new HashMap<>();
     }
 
 
@@ -49,13 +54,13 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 
     @Override
     public IparsingRule getParseRule() {
-        return null;
+        return this.origin.getParsingRule();
     }
 
 
     @Override
     public DictionarySearch asSearchInterface() {
-        return null;
+        return new DictionarySearch(this.dict);
     }
 
 
