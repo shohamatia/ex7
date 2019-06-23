@@ -1,6 +1,7 @@
 package processing.textStructure;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * This class represents a result containing a single string (single word or multiple words treated as one)
@@ -54,8 +55,7 @@ public class WordResult {
 	 * @throws IOException
 	 */
 	public String resultToString() throws IOException {
-        return null;
-        ///todo
+        return Arrays.toString(this.content);
     }
 
 

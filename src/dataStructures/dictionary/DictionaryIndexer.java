@@ -14,51 +14,49 @@ import java.io.FileNotFoundException;
  * locations within the files.
  */
 public class DictionaryIndexer extends Aindexer<DictionarySearch> {
-	
-	private static final Stemmer STEMMER = new Stemmer();
-	public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
-	private Corpus origin;
 
-	/**
-	 * Basic constructor, sets origin Corpus and initializes backing hashmap
-	 * @param origin    the Corpus to be indexed by this DS.
-	 */
-	public DictionaryIndexer(Corpus origin) {
-		super(origin);
-		this.origin = origin;
-	}
+    private static final Stemmer STEMMER = new Stemmer();
+    public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
+    private Corpus origin;
 
-
-	@Override
-	protected void readIndexedFile() throws WrongMD5ChecksumException, FileNotFoundException {
-	
+    /**
+     * Basic constructor, sets origin Corpus and initializes backing hashmap
+     *
+     * @param origin the Corpus to be indexed by this DS.
+     */
+    public DictionaryIndexer(Corpus origin) {
+        super(origin);
+        this.origin = origin;
+    }
 
 
+    @Override
+    protected void readIndexedFile() throws WrongMD5ChecksumException, FileNotFoundException {
+        throw new FileNotFoundException();
+    }
 
-	}
-	@Override
-	protected void writeIndexFile() {
-	
-
-	}
-
-	@Override
-	protected void indexCorpus() {
-	
-	}
+    @Override
+    protected void writeIndexFile() {
 
 
-	@Override
-	public IparsingRule getParseRule() {
-		return null;
-	}
+    }
 
-	
-	@Override
-	public DictionarySearch asSearchInterface() {
-		return null;
-	}
+    @Override
+    protected void indexCorpus() {
 
+    }
+
+
+    @Override
+    public IparsingRule getParseRule() {
+        return null;
+    }
+
+
+    @Override
+    public DictionarySearch asSearchInterface() {
+        return null;
+    }
 
 
 }

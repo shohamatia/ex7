@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,7 +18,8 @@ import java.util.List;
 public class TextSearcher {
     private final static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single argument.";
     private final static String INVALID_INPUT_ARGUMENTS_FILE_ERROR = "The input was an invalid file.";
-    private final static String QUERY_RESULTS = "The input was an invalid file.";
+    private final static String QUERY_RESULTS = "The top 10 results for query '%s' are:";
+    private final static String RESULTS_SEPARATOR = String.join("", Collections.nCopies(256, "="));
 
 
     /**
@@ -54,10 +56,18 @@ public class TextSearcher {
 
         String query = conf.getQuery();
         List<? extends WordResult> results = indexer.asSearchInterface().search(query);
-        System.out.println("results:");
+        System.out.println(String.format(QUERY_RESULTS, query));
         if(results==null||results.size()==0)
             System.out.println("empty or null results");
-        results.forEach(System.out::println);
+        for (WordResult result:results){
+            try {
+                System.out.println(result.resultToString());
+            }
+            catch (IOException e){
+                System.out.println("problem!!!!");
+            }
+            System.out.println(RESULTS_SEPARATOR);
+        }
     }
 
     private static List<String> checkLegitFile(String[] args) throws IOException {

@@ -1,6 +1,5 @@
 package processing.textStructure;
 
-import com.sun.deploy.util.ArrayUtil;
 
 import java.io.*;
 import java.util.LinkedList;

@@ -30,7 +30,7 @@ public class NaiveSearch implements IsearchStrategy {
         String blockString = block.toString();
         int i;
         int j;
-        for (i = 0; i < blockString.length() - query.length(); i++) {
+        for (i = 0; i <= blockString.length() - query.length(); i++) {
             foundMatch:
             {
                 for (j = 0; j < query.length(); j++) {
@@ -42,6 +42,4 @@ public class NaiveSearch implements IsearchStrategy {
         }
         return wordResults;
     }
-
-
 }
