@@ -60,7 +60,7 @@ public class TextSearcher {
         System.out.println(String.format(QUERY_RESULTS, query));
         if(results==null||results.size()==0)
             System.out.println("empty or null results");
-        for (int i = 0; i< Math.max(results.size(),10);i++){
+        for (int i = 0; i< Math.min(results.size(),10);i++){
             WordResult result = results.get(i);
             try {
                 System.out.println(result.resultToString());

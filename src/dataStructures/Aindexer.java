@@ -97,9 +97,6 @@ public abstract class Aindexer<T extends IsearchStrategy> {
      */
     public abstract IparsingRule getParseRule();
 
-    protected IparsingRule standardGetParseRule() {
-        return this.origin.getParsingRule();
-    }
 //
 //	/**
 //	 * simple getter

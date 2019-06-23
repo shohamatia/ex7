@@ -92,8 +92,6 @@ public class Word implements Serializable {
 		return this.srcBlk.getStartIndex()+this.srcBlkOffset;
 	}
 
-	long getStartIdx(){ return this.srcBlkOffset;}
-
 	@Override
 	public String toString(){
 		return extractWord();
