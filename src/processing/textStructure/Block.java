@@ -4,7 +4,6 @@ package processing.textStructure;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This class represents an arbitrary block of text within a file

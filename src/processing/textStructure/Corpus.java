@@ -77,7 +77,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * The path to the corpus folder
 	 * @return A String representation of the absolute path to the corpus folder
 	 */
-	private String getPath() {
+	public String getPath() {
 		return corpusPath;
     }
 
