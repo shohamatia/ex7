@@ -3,6 +3,7 @@ package processing.textStructure;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * This class represents a result containing a single string (single word or multiple words treated as one)
@@ -56,14 +57,21 @@ public class WordResult {
 
     /**
      * Method for printing the result
-     *
      * @return The result representation as defined by the "printing results" requirement in the exercise
      * instructions.
      * @throws IOException
      */
     public String resultToString() throws IOException {
-        String representation = Arrays.toString(this.content) + RESULTS_SEPARATOR;
-        return representation;
+        List<String> metaData = this.location.getMetadata();
+        StringBuilder representation = new StringBuilder(RESULTS_SEPARATOR + Arrays.toString(this.content));
+        for (int i = 0; i < metaData.size(); i++){
+            if (i != metaData.size() - 1){
+                representation.append(metaData.get(i)).append("\n");
+            }else {
+                representation.append(metaData.get(i));
+            }
+        }
+        return representation.toString();
     }
 
 
