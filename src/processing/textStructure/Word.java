@@ -59,13 +59,17 @@ public class Word implements Serializable {
 	protected String extractWord(){
 		RandomAccessFile raf = this.srcBlk.getRAF();
 		String word = " ";
-		List<Character> wordChars = new LinkedList<>();
+		List<Byte> wordByes = new LinkedList<>();
 		try {
 			raf.seek(this.srcBlkOffset);
 			for (int i = 0; i < this.length; i++){
-				wordChars.add(raf.readChar());
+				wordByes.add(raf.readByte());
 			}
-			word = wordChars.stream().map(String::valueOf).collect(Collectors.joining());
+			byte[] wordBytesArray = new byte[this.length];
+			for (int i = 0; i < this.length; i++){
+			    wordBytesArray[i] = wordByes.get(i);
+            }
+			word = new String(wordBytesArray);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

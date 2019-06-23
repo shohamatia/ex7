@@ -72,11 +72,9 @@ public class Block implements Serializable {
 			while (this.inputFile.getFilePointer() < this.endIdx){
 				bytes.add(this.inputFile.readByte());
 			}
-			Byte[] bytesArray = new Byte[bytes.size()];
-			bytesArray = bytes.toArray(bytesArray);
-			byte[] byteArray = new byte[bytesArray.length];
-			for (int i = 0; 1 < bytesArray.length; i++){
-				byteArray[i] = bytesArray[i];
+			byte[] byteArray = new byte[bytes.size()];
+			for (int i = 0; i < bytes.size(); i++){
+				byteArray[i] = bytes.get(i);
 			}
 			return new String(byteArray);
 		} catch (IOException e) {
