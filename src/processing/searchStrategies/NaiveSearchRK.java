@@ -2,15 +2,31 @@ package processing.searchStrategies;
 
 import processing.textStructure.Block;
 import processing.textStructure.Corpus;
+import processing.textStructure.Entry;
 import processing.textStructure.WordResult;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class NaiveSearchRK extends NaiveSearch {
+    private static Corpus origin;
     public NaiveSearchRK(Corpus origin) {
         super(origin);
+        NaiveSearchRK.origin = origin;
+
+    }
+
+    public List<WordResult> search(String query) {
+        List<WordResult> results = new LinkedList<>();
+        for (Entry entry : NaiveSearchRK.origin){
+            for (Block block : entry){
+                searchBlock(block, results, query);
+            }
+        }
+        return results;
     }
 
     private void searchBlock(Block blk, List<WordResult> results, String query) {
