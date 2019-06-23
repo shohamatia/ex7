@@ -60,7 +60,9 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                 String blockString = block.toString();
                 m.reset(blockString);
                 while (m.find()){
-                    int key = m.group().hashCode();
+                    String word =m.group();
+                    word = STEMMER.stem(word);
+                    int key = word.hashCode();
                     if (!dict.containsKey(key))
                         dict.put(m.group().hashCode(),new LinkedList<>());
                     dict.get(key).add(new Word(block, m.start(),m.end()));
