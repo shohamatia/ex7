@@ -44,7 +44,7 @@ public abstract class Aindexer<T extends IsearchStrategy> {
             readIndexedFile();
             origin.updateRAFs();
             System.out.println("success on reading index from file");
-        } catch (FileNotFoundException | WrongMD5ChecksumException | ClassNotFoundException e) {
+        } catch (FileNotFoundException | WrongMD5ChecksumException e) {
             origin.populate();
             indexCorpus();
             writeIndexFile();

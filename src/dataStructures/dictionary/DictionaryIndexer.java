@@ -55,8 +55,6 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     protected void indexCorpus() {
         final Pattern p = Pattern.compile(regexForWord);
         final Matcher m = p.matcher("");
-
-
         for (Entry entry:origin){
             for (Block block: entry){
                 String blockString = block.toString();
@@ -65,7 +63,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                     int key = m.group().hashCode();
                     if (!dict.containsKey(key))
                         dict.put(m.group().hashCode(),new LinkedList<>());
-                    dict.get(key).add(null);
+                    dict.get(key).add(new Word(block, m.start(),m.end()));
                 }
 
             }

@@ -35,7 +35,7 @@ public class Word implements Serializable {
 	 * The constructor.
 	 * @param source    The Block where this word resides.
 	 * @param startIdx  The offset within the block where the word starts.
-	 * @param endIdx    The  offset within the block where the word ends.
+	 * @param endIdx    The offset within the block where the word ends.
 	 */
 	public Word(Block source, long startIdx, long endIdx){
 		this.srcBlk = source;
@@ -59,16 +59,12 @@ public class Word implements Serializable {
 	protected String extractWord(){
 		RandomAccessFile raf = this.srcBlk.getRAF();
 		String word = " ";
-		List<Byte> wordBytes = new LinkedList<>();
+		byte[] wordBytesArray = new byte[this.length];
 		try {
 			raf.seek(this.srcBlkOffset);
 			for (int i = 0; i < this.length; i++){
-				wordBytes.add(raf.readByte());
+				wordBytesArray[i] = raf.readByte();
 			}
-			byte[] wordBytesArray = new byte[this.length];
-			for (int i = 0; i < this.length; i++){
-			    wordBytesArray[i] = wordBytes.get(i);
-            }
 			word = new String(wordBytesArray);
 		} catch (IOException e) {
 			e.printStackTrace();
