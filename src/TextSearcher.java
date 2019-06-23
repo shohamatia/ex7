@@ -52,6 +52,9 @@ public class TextSearcher {
 
         String query = conf.getQuery();
         List<? extends WordResult> results = indexer.asSearchInterface().search(query);
+        System.out.println("results:");
+        if(results==null||results.size()==0)
+            System.out.println("empty or null results");
         results.forEach(System.out::println);
     }
 
