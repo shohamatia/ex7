@@ -19,7 +19,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
     private String name;
     private String corpusPath;
     private List<String> paths;
-
+	private File source;
 
     public Corpus(String path, String parserName) throws IOException {
 		name = parserName;
@@ -28,19 +28,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 		paths = new ArrayList<>();
 
 		corpusPath = path;
-		File source = new File(getPath());
-		File[] list = source.listFiles();
-
-		System.out.println("GOT CONSTRUCTOR");
-
-		if(list != null){
-			recursiveFile(list);
-		}
-		else {
-			throw new IOException();
-		}
-
-        System.out.println("END CONSTRUCTOR");
+		this.source = new File(getPath());
     }
 
         /*
@@ -69,9 +57,21 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	/**
 	 * This method populates the Block lists for each Entry in the corpus.
 	 */
-	public void populate(){
-    	///TODO
-    }
+	public void populate() {
+		File[] list = source.listFiles();
+
+		System.out.println("Starting to populate");
+
+		if(list != null){
+			recursiveFile(list);
+		}
+		else {
+			System.out.println("received non directory source file");
+		}
+
+		System.out.println("finished populating");
+
+	}
     
 
 	/**
