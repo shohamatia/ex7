@@ -32,10 +32,6 @@ public class WordResult {
         this.idxInBlk = idx;
     }
 
-    WordResult(Word word){
-        this(word.getSrcBlk(),new String[]{word.toString()}, word.getStartIdx());
-    }
-
     /**
      * Getter for the result's block
      * @return  The block where this word was found.
