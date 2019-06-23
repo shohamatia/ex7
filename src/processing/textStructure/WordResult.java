@@ -9,9 +9,9 @@ import java.util.List;
  * This class represents a result containing a single string (single word or multiple words treated as one)
  */
 public class WordResult {
-    private final static String RESULTS_SEPARATOR = "\\n" + String.join("", Collections.nCopies(256, "="));
+    private final static String RESULTS_SEPARATOR = String.join("", Collections.nCopies(256, "="));
     private long idxInBlk;
-    Block location;
+    private Block location;
     protected String[] content;
 
     /**
@@ -63,7 +63,8 @@ public class WordResult {
      */
     public String resultToString() throws IOException {
         List<String> metaData = this.location.getMetadata();
-        StringBuilder representation = new StringBuilder(RESULTS_SEPARATOR + Arrays.toString(this.content));
+        StringBuilder representation = new StringBuilder(RESULTS_SEPARATOR);
+        representation.append("\n").append(Arrays.toString(this.content));
         for (int i = 0; i < metaData.size(); i++){
             if (i != metaData.size() - 1){
                 representation.append(metaData.get(i)).append("\n");

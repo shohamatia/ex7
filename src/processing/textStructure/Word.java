@@ -5,7 +5,6 @@ import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Wrapper class for a single word containing relevant attributes for distance calculation and string extraction from
