@@ -1,5 +1,7 @@
 package processing.textStructure;
 
+import com.sun.deploy.util.ArrayUtil;
+
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,7 +72,13 @@ public class Block implements Serializable {
 			while (this.inputFile.getFilePointer() < this.endIdx){
 				bytes.add(this.inputFile.readByte());
 			}
-			return String.valueOf(bytes);
+			Byte[] bytesArray = new Byte[bytes.size()];
+			bytesArray = bytes.toArray(bytesArray);
+			byte[] byteArray = new byte[bytesArray.length];
+			for (int i = 0; 1 < bytesArray.length; i++){
+				byteArray[i] = bytesArray[i];
+			}
+			return new String(byteArray);
 		} catch (IOException e) {
 			System.out.println("file reading error");
 			return " ";
