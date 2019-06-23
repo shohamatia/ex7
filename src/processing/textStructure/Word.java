@@ -59,15 +59,15 @@ public class Word implements Serializable {
 	protected String extractWord(){
 		RandomAccessFile raf = this.srcBlk.getRAF();
 		String word = " ";
-		List<Byte> wordByes = new LinkedList<>();
+		List<Byte> wordBytes = new LinkedList<>();
 		try {
 			raf.seek(this.srcBlkOffset);
 			for (int i = 0; i < this.length; i++){
-				wordByes.add(raf.readByte());
+				wordBytes.add(raf.readByte());
 			}
 			byte[] wordBytesArray = new byte[this.length];
 			for (int i = 0; i < this.length; i++){
-			    wordBytesArray[i] = wordByes.get(i);
+			    wordBytesArray[i] = wordBytes.get(i);
             }
 			word = new String(wordBytesArray);
 		} catch (IOException e) {
@@ -91,6 +91,8 @@ public class Word implements Serializable {
 	public long getEntryIndex(){
 		return this.srcBlk.getStartIndex()+this.srcBlkOffset;
 	}
+
+	long getStartIdx(){ return this.srcBlkOffset;}
 
 	@Override
 	public String toString(){

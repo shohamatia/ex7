@@ -3,6 +3,7 @@ import dataStructures.dictionary.DictionaryIndexer;
 import dataStructures.naive.NaiveIndexer;
 import dataStructures.naive.NaiveIndexerRK;
 import processing.textStructure.Corpus;
+import processing.textStructure.Word;
 import processing.textStructure.WordResult;
 
 import java.io.IOException;
@@ -59,7 +60,8 @@ public class TextSearcher {
         System.out.println(String.format(QUERY_RESULTS, query));
         if(results==null||results.size()==0)
             System.out.println("empty or null results");
-        for (WordResult result:results){
+        for (int i = 0; i< Math.max(results.size(),10);i++){
+            WordResult result = results.get(i);
             try {
                 System.out.println(result.resultToString());
             }
