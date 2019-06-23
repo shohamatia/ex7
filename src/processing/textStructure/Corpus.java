@@ -54,21 +54,14 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 */
 	private void recursiveFile(File[] source){
 		for(File check: source) {
-			if (check.isDirectory()) {
-				File[] list = check.listFiles();
-				if (list != null) {
-					recursiveFile(list);
-				} else {
-                    Entry entry = new Entry(check.getPath(), parsingRule);
-                    entryList.add(entry);
-                    paths.add(check.getPath());
-                }
+			File[] list = check.listFiles();
+			if (list != null) {
+				recursiveFile(list);
+			} else {
+				Entry entry = new Entry(check.getPath(), parsingRule);
+				entryList.add(entry);
+				paths.add(check.getPath());
 			}
-			else {
-                Entry entry = new Entry(check.getPath(), parsingRule);
-                entryList.add(entry);
-                paths.add(check.getPath());
-            }
 		}
 	}
 
