@@ -33,18 +33,22 @@ public class TextSearcher {
             testConfiguration(conf);
 
             origin = new Corpus(conf.getCorpusPathAddress(), conf.getParseRuleString());
+            System.out.println("got origin");
         } catch (IOException e) {
             System.out.println(INVALID_INPUT_ARGUMENTS_FILE_ERROR);
             return;
         }
 
-
+        System.out.println("gonna index");
         Aindexer indexer = getIndexer(conf.getIndexType(),origin);
         indexer.index();
+        System.out.println("indexed");
 
         if (!conf.hasQuery()) {
             return;
         }
+
+        System.out.println("gonna search");
 
         String query = conf.getQuery();
         List<? extends WordResult> results = indexer.asSearchInterface().search(query);
@@ -62,6 +66,7 @@ public class TextSearcher {
     }
 
     static void testConfiguration(Configuration conf) {
+        System.out.println("printing indexer type, parser type, path, query if exists");
         System.out.println(conf.getIndexType().toString());
         System.out.println(conf.getParserType().toString());
         System.out.println(conf.getPath().toString());
@@ -69,6 +74,8 @@ public class TextSearcher {
             System.out.println(conf.getQuery());
         } catch (Exception e) {
         }
+        System.out.println("finished printing configuration inputs");
+        System.out.println();
     }
 
     static Aindexer getIndexer(Aindexer.IndexTypes indexType, Corpus origin) {

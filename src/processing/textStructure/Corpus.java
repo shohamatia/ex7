@@ -22,7 +22,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 
     public Corpus(String path, String parserName) throws IOException {
 		name = parserName;
-		parsingFactory();
+		this.createParserRule();
 		entryList = new LinkedList<>();
 		paths = new ArrayList<>();
 
@@ -146,7 +146,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	}
 
 	/** parsing factory, creates an instance of new parsing rule */
-	private void parsingFactory(){
+	private void createParserRule(){
 		switch (name) {
 			case "SIMPLE":
 				parsingRule = new SimpleParsingRule();

@@ -28,7 +28,6 @@ public class NaiveSearch implements IsearchStrategy {
     }
 
     private List<WordResult> matchResults(String query, Block block) {
-        //Currently implemented as searching through string, reimplement as non-strings
         List<WordResult> wordResults = new LinkedList<>();
         String blockString = block.toString();
         int i;
@@ -40,7 +39,7 @@ public class NaiveSearch implements IsearchStrategy {
                     if (blockString.charAt(i + j) != query.charAt(j))
                         break foundMatch;
                 }
-                wordResults.add(new WordResult(block,new String[]{query},(long)i));
+                wordResults.add(new WordResult(block, new String[]{query}, (long) i));
             }
         }
         return wordResults;
