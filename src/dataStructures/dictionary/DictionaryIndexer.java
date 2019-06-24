@@ -69,7 +69,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
              ObjectOutputStream out = new ObjectOutputStream(file)) {
             String originChecksum = origin.getChecksum();
             out.writeObject(originChecksum);
-            out.writeObject(dict);
+            out.writeObject(new HashMapWrapper(dict));
             //out.writeObject(origin);
         } catch (IOException e) {
             System.err.println("writeIndexFile error:" + e.getMessage());
