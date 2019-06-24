@@ -40,8 +40,8 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         super(origin);
         this.origin = origin;
         this.dict = new HashMap<>();
-        this.fileIndexerPath = TYPE_NAME.toString() + "_" + origin.getParsingRule().getClass().toString() +
-                "_" + Paths.get(origin.getPath()).getFileName();
+        this.fileIndexerPath = TYPE_NAME.toString() + "_" + origin.getParsingRule().getClass().getSimpleName()
+                + "_" + Paths.get(origin.getPath()).getFileName();
 
     }
 
@@ -61,7 +61,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             try {
                 bos.close();
             }catch (IOException e){
-                System.out.println(e.getMessage());
+                System.err.println(e.getMessage());
             }
         }
         return bytes;
@@ -101,7 +101,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             }else throw new WrongMD5ChecksumException();
             file.close();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -120,7 +120,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             out.close();
             file.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
