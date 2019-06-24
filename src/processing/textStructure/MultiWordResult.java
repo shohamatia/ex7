@@ -22,6 +22,7 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
 	 */
 	public MultiWordResult(String[] query, Block block, long[] locs) {
 		super(block, query, Arrays.stream(locs).min().orElse(0));
+
 	}
 
 	/**

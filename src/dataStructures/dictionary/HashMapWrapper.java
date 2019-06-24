@@ -8,7 +8,7 @@ import java.util.List;
 
 class HashMapWrapper implements Serializable {
 
-    transient HashMap<Integer, List<Word>> map;
+    HashMap<Integer, List<Word>> map;
 
     HashMapWrapper(HashMap<Integer, List<Word>> map) {
         this.map = map;

@@ -47,7 +47,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 
     private byte[] getObjectAsBytes(Object obj){
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = null;
+        ObjectOutput out;
         byte[] bytes = null;
         try {
             out = new ObjectOutputStream(bos);
@@ -56,13 +56,8 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             bytes = bos.toByteArray();
 
         } catch (IOException e) {
+            System.err.println("Problem with getObjectAsBytes:");
             e.printStackTrace();
-        } finally {
-            try {
-                bos.close();
-            }catch (IOException e){
-                System.err.println(e.getMessage());
-            }
         }
         return bytes;
     }
@@ -104,17 +99,14 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         byte[] curDictAsBytes = getObjectAsBytes(this.dict);
         String dictChecksum = MD5.getMd5(curDictAsBytes);
         HashMapWrapper dictToWrite = new HashMapWrapper(dict);
-        try {
-            FileOutputStream file = new FileOutputStream(fileIndexerPath);
-            ObjectOutputStream out = new ObjectOutputStream(file);
+        try (FileOutputStream file = new FileOutputStream(fileIndexerPath);
+             ObjectOutputStream out = new ObjectOutputStream(file)){
             out.writeObject(originChecksum);
             out.writeObject(origin);
             out.writeObject(dictChecksum);
             out.writeObject(dictToWrite);
-            out.close();
-            file.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("writeIndexFile error:"+e.getMessage());
             e.printStackTrace();
         }
     }
