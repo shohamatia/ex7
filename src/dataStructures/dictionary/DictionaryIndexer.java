@@ -66,45 +66,58 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         return bytes;
     }
 
+    private String[] getObjectsChecksum(){
+        String[] stringArray = new String[2];
+        byte[] curOriginAsBytes = getObjectAsBytes(this.origin);
+        stringArray[0] = MD5.getMd5(curOriginAsBytes);
+        byte[] curDictAsBytes = getObjectAsBytes(this.dict);
+        stringArray[1] = MD5.getMd5(curDictAsBytes);
+        return stringArray;
+    }
+
     @Override
     protected void readIndexedFile() throws WrongMD5ChecksumException, FileNotFoundException {
-        byte[] curOriginAsBytes = getObjectAsBytes(origin);
-        String originChecksum = MD5.getMd5(curOriginAsBytes);
-        byte[] curDictAsBytes = getObjectAsBytes(dict);
-        String dictChecksum = MD5.getMd5(curDictAsBytes);
+        String originChecksum = getObjectsChecksum()[0];
+        String dictChecksum = getObjectsChecksum()[1];
         FileInputStream file = new FileInputStream(fileIndexerPath);
         try {
             ObjectInputStream in = new ObjectInputStream(file);
-            Object origin = in.readObject();
-            byte[] originAsBytes = getObjectAsBytes(origin);
-            if (!MD5.getMd5(originChecksum).equals(MD5.getMd5(originAsBytes))) {
-                this.origin = (Corpus) in.readObject();
-            }else {
-                in.readObject();
-            }
-            Object dict = in.readObject();
-            byte[] dictAsBytes = getObjectAsBytes(dict);
-            if (!MD5.getMd5(dictAsBytes).equals(MD5.getMd5(dictChecksum))){
-                this.dict = (HashMap<Integer, List<Word>>) in.readObject();
-            }
+            Object originByteArray = in.readObject();
+            byte[] originAsBytes = getObjectAsBytes(originByteArray);
+            if (MD5.getMd5(originChecksum).equals(MD5.getMd5(originAsBytes))) {
+                Object originObj = in.readObject();
+                if (originObj instanceof Corpus) {
+                    this.origin = (Corpus) originObj;
+                }else throw new WrongMD5ChecksumException();
+            }else throw new WrongMD5ChecksumException();
+            Object dictByteArray = in.readObject();
+            byte[] dictAsBytes = getObjectAsBytes(dictByteArray);
+            if (MD5.getMd5(dictAsBytes).equals(MD5.getMd5(dictChecksum))){
+                Object dictObj = in.readObject();
+                if (dictObj instanceof HashMapWrapper) {
+                    HashMapWrapper dictReader = (HashMapWrapper) dictObj;
+                    this.dict = dictReader.getMap();
+                }else throw new WrongMD5ChecksumException();
+            }else throw new WrongMD5ChecksumException();
+            file.close();
+            in.close();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
     @Override
     protected void writeIndexFile() {
-        byte[] originAsBytes = getObjectAsBytes(origin);
-        String originChecksum = MD5.getMd5(originAsBytes);
-        byte[] dictAsBytes = getObjectAsBytes(dict);
-        String dictChecksum = MD5.getMd5(dictAsBytes);
+        String originChecksum = getObjectsChecksum()[0];
+        String dictChecksum = getObjectsChecksum()[1];
+        HashMapWrapper dictToWrite = new HashMapWrapper(dict);
         try {
             FileOutputStream file = new FileOutputStream(fileIndexerPath);
             ObjectOutputStream out = new ObjectOutputStream(file);
             out.writeObject(originChecksum);
             out.writeObject(origin);
             out.writeObject(dictChecksum);
-            out.writeObject(dict);
+            out.writeObject(dictToWrite);
             out.close();
             file.close();
         } catch (IOException e) {
