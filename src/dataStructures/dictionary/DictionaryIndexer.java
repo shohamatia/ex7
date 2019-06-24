@@ -39,8 +39,8 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         super(origin);
         this.origin = origin;
         this.dict = new HashMap<>();
-        this.fileIndexerPath = TYPE_NAME.toString() + "_" + origin.getParsingRule().toString() + "_" + origin
-                .getPath();
+        this.fileIndexerPath = TYPE_NAME.toString() + "_" + origin.getParsingRule().getClass().toString() +
+                "_" + origin.getPath();
 
     }
 
