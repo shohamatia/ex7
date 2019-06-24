@@ -27,6 +27,17 @@ public class Corpus implements Iterable<Entry>, Serializable {
 
 		corpusPath = path;
 		this.source = new File(getPath());
+
+		File[] list = source.listFiles();
+
+		System.out.println("Starting to populate");
+
+		if(list == null)
+			System.out.println("received non directory source file");
+
+		recursiveFile(list);
+
+		System.out.println("finished populating");
     }
 
 	/** this method goes over all the files in the directory recursively
@@ -35,12 +46,13 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	private void recursiveFile(File[] source){
 		for(File check: source) {
 			File[] list = check.listFiles();
-			if (list != null) {
-				recursiveFile(list);
-			} else {
+			if (list == null) {
 				Entry entry = new Entry(check.getPath(), parsingRule);
 				entryList.add(entry);
+				continue;
 			}
+
+			recursiveFile(list);
 		}
 	}
 
@@ -48,18 +60,8 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 * This method populates the Block lists for each Entry in the corpus.
 	 */
 	public void populate() {
-		File[] list = source.listFiles();
-
-		System.out.println("Starting to populate");
-
-		if(list != null){
-			recursiveFile(list);
-		}
-		else {
-			System.out.println("received non directory source file");
-		}
-
-		System.out.println("finished populating");
+		for (Entry entry:this)
+			entry.populate();
 	}
     
 
@@ -87,15 +89,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 */
 	public String getChecksum() throws IOException {
 		StringBuilder str = new StringBuilder();
-		for(Entry entry: this){
-			str.append(getFileChecksum(entry.getPath()));
-//			if(path.isEmpty()){
-//				throw new IOException();
-//			}
-//			else{
-//				str.append(getFileChecksum(path));
-//			}
-		}
+		for(Entry entry: this) str.append(getFileChecksum(entry.getPath()));
 		return str.toString();
     }
 

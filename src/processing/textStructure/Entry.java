@@ -16,6 +16,8 @@ public class Entry implements Iterable<Block>, Serializable {
 	public static final long serialVersionUID = 1L;
 	private List<Block> blocksList;
 	private String path;
+	private File file;
+	private IparsingRule parseRule;
 
 	String getPath(){
 	    return this.path;
@@ -24,7 +26,11 @@ public class Entry implements Iterable<Block>, Serializable {
 
 	public Entry(String filePath, IparsingRule parseRule) {
 	    this.path = filePath;
-		File file = new File(this.path);
+		this.file = new File(this.path);
+		this.parseRule = parseRule;
+	}
+
+	void populate(){
 		try {
 			RandomAccessFile inputFile = new RandomAccessFile(file, "rw");
 			blocksList = parseRule.parseFile(inputFile);
