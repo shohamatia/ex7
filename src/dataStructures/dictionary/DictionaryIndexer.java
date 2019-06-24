@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * locations within the files.
  */
 public class DictionaryIndexer extends Aindexer<DictionarySearch> {
-    private static final String regexForWord = "[^\\s]*";
+    private static final String regexForWord = "[^\\s]+";
     private static final Stemmer STEMMER = new Stemmer();
     public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
     private final String fileIndexerPath;
@@ -138,7 +138,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                     word = STEMMER.stem(word);
                     int key = word.hashCode();
                     if (!dict.containsKey(key))
-                        dict.put(m.group().hashCode(),new LinkedList<>());
+                        dict.put(key,new LinkedList<>());
                     dict.get(key).add(new Word(block, m.start(),m.end()));
                 }
 
