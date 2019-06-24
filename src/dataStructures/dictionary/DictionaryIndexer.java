@@ -28,7 +28,6 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     private static final Stemmer STEMMER = new Stemmer();
     public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
     private final String fileIndexerPath;
-    private transient Corpus origin;
     private transient HashMap<Integer, List<Word>> dict;
 
     /**
@@ -49,14 +48,24 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     protected void readIndexedFile() throws WrongMD5ChecksumException, FileNotFoundException {
         try (FileInputStream file = new FileInputStream(fileIndexerPath);
              ObjectInputStream in = new ObjectInputStream(file)) {
+            //Check unchanged corpus
             String originCashedChecksum = (String) in.readObject();
             if (!origin.getChecksum().equals(originCashedChecksum))
                 throw new WrongMD5ChecksumException();
+
+            //Read Dict
             Object dictObj = in.readObject();
             if (!(dictObj instanceof HashMapWrapper) )
                 throw new WrongMD5ChecksumException();
             HashMapWrapper dictReader = (HashMapWrapper) dictObj;
             this.dict = dictReader.getMap();
+
+            //Read origin
+            Object originObj = in.readObject();
+            if (!(originObj instanceof Corpus) )
+                throw new WrongMD5ChecksumException();
+            this.origin = (Corpus)originObj;
+
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
             throw new FileNotFoundException();
@@ -70,7 +79,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             String originChecksum = origin.getChecksum();
             out.writeObject(originChecksum);
             out.writeObject(new HashMapWrapper(dict));
-            //out.writeObject(origin);
+            out.writeObject(origin);
         } catch (IOException e) {
             System.err.println("writeIndexFile error:" + e.getMessage());
         }

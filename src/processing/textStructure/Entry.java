@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class Entry implements Iterable<Block>, Serializable {
 	public static final long serialVersionUID = 1L;
-	private List<Block> blocksList;
+	private ArrayList<Block> blocksList;
 	private String path;
 	private File file;
 	private IparsingRule parseRule;
@@ -33,7 +34,7 @@ public class Entry implements Iterable<Block>, Serializable {
 	void populate(){
 		try {
 			RandomAccessFile inputFile = new RandomAccessFile(file, "rw");
-			blocksList = parseRule.parseFile(inputFile);
+			blocksList = new ArrayList<>(parseRule.parseFile(inputFile));
 			for (Block block: blocksList){
 				block.setEntryName(this.path);
 			}
