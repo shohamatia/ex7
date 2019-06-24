@@ -15,7 +15,7 @@ public interface IsearchStrategy {
     final Stemmer stemmer = new Stemmer();
 
 	/**
-	 * The main abstract method - Search a query string (could be multiple words) and return a result list.
+	 * The test abstract method - Search a query string (could be multiple words) and return a result list.
 	 * @param query The query string to search for.
 	 * @return  A list of result objects
 	 */

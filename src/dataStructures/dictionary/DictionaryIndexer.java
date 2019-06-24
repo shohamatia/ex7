@@ -80,8 +80,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         String originChecksum = getObjectsChecksum()[0];
         String dictChecksum = getObjectsChecksum()[1];
         FileInputStream file = new FileInputStream(fileIndexerPath);
-        try {
-            ObjectInputStream in = new ObjectInputStream(file);
+        try (ObjectInputStream in = new ObjectInputStream(file)){
             Object originByteArray = in.readObject();
             byte[] originAsBytes = getObjectAsBytes(originByteArray);
             if (MD5.getMd5(originChecksum).equals(MD5.getMd5(originAsBytes))) {
@@ -100,7 +99,6 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                 }else throw new WrongMD5ChecksumException();
             }else throw new WrongMD5ChecksumException();
             file.close();
-            in.close();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -141,7 +139,6 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                         dict.put(m.group().hashCode(),new LinkedList<>());
                     dict.get(key).add(new Word(block, m.start(),m.end()));
                 }
-
             }
         }
     }

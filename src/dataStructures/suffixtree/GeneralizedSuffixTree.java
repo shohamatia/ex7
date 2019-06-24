@@ -26,7 +26,7 @@ import java.util.Collections;
  * Unlike common suffix trees, which are generally used to build an index out of one (very) long string,
  * a Generalized Suffix Tree can be used to build an index over many strings.
  *
- * Its main operations are put and processing.searchStrategies:
+ * Its test operations are put and processing.searchStrategies:
  * Put adds the given key to the index, allowing for later retrieval of the given value.
  * Search can be used to retrieve the set of all the values that were put in the index with keys that contain a given input.
  *
@@ -351,7 +351,7 @@ public class GeneralizedSuffixTree {
             // line 3
             Edge tempEdge = r.getEdge(newChar);
             if (null != tempEdge) {
-                // such a node is already present. This is one of the main differences from Ukkonen's case:
+                // such a node is already present. This is one of the test differences from Ukkonen's case:
                 // the tree can contain deeper nodes at this stage because different strings were added by previous iterations.
                 leaf = tempEdge.getDest();
             } else {

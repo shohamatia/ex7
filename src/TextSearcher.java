@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The main program - A text searching module that indexes and queries large corpuses for strings or word groups
+ * The test program - A text searching module that indexes and queries large corpuses for strings or word groups
  */
 public class TextSearcher {
     private final static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single argument.";
