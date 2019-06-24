@@ -1,6 +1,8 @@
 package processing.textStructure;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.OptionalLong;
 
 /**
  * This class defines a query result for multiple non-consecutive words.
@@ -8,9 +10,6 @@ import java.io.IOException;
 public class MultiWordResult extends WordResult implements Comparable<MultiWordResult> {
 	private long[] wordPositions;
 	private int confidence;
-
-
-
 	private MultiWordResult(Block blk, String[] query, long idx) {
 		super(blk, query, idx);
 	}
@@ -22,12 +21,12 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
 	 * @param locs  The indices of the words in the block
 	 */
 	public MultiWordResult(String[] query, Block block, long[] locs) {
-		//TODO this is placeholder code, fix this
-		super(block, query, 0);
+		super(block, query, Arrays.stream(locs).min().orElse(0));
 	}
 
 	/**
-	 * Calculate the confidence level of a result, defined by the sum of word distances.
+	 * Calculate the confidence level of a result, defined by the the negative sum of word distances, such
+	 * that the highest confidence level is the closest to the original query, and the closest to zero.
 	 * @param locs  The locations of the query words in the text
 	 * @return  The sum of distances
 	 */
@@ -42,12 +41,13 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
 	 */
 	@Override
 	public int compareTo(MultiWordResult o) {
-		return 0;
+		return this.confidence-o.confidence;
+		//TODO check that this is in the right order
 	}
 
 	/**
 	 * Extract a string that contains all words in the multy-word-result
-	 * This should be a sentance starting at the word with the minimal location (index) and ending
+	 * This should be a sentence starting at the word with the minimal location (index) and ending
 	 * at the first line-break after the last word
 	 * @return  A piece of text containing all query words
 	 */
