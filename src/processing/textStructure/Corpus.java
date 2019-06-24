@@ -18,25 +18,16 @@ public class Corpus implements Iterable<Entry>, Serializable {
     private IparsingRule parsingRule;
     private String name;
     private String corpusPath;
-    private List<String> paths;
 	private File source;
 
     public Corpus(String path, String parserName) {
 		name = parserName;
 		this.createParserRule();
 		entryList = new LinkedList<>();
-		paths = new ArrayList<>();
 
 		corpusPath = path;
 		this.source = new File(getPath());
     }
-
-        /*
-        check if the path is a folder or file.
-        if file - single entry corpus.
-        otherwise, recursively scan the directory for all subdirectories and files.
-        each entry in a corpus should hold the folder from which the file came.
-         */
 
 	/** this method goes over all the files in the directory recursively
 	 * @param source source to check if directory
@@ -49,7 +40,6 @@ public class Corpus implements Iterable<Entry>, Serializable {
 			} else {
 				Entry entry = new Entry(check.getPath(), parsingRule);
 				entryList.add(entry);
-				paths.add(check.getPath());
 			}
 		}
 	}
@@ -97,13 +87,14 @@ public class Corpus implements Iterable<Entry>, Serializable {
 	 */
 	public String getChecksum() throws IOException {
 		StringBuilder str = new StringBuilder();
-		for(String path: paths){
-			if(path.isEmpty()){
-				throw new IOException();
-			}
-			else{
-				str.append(getFileChecksum(path));
-			}
+		for(Entry entry: this){
+			str.append(getFileChecksum(entry.getPath()));
+//			if(path.isEmpty()){
+//				throw new IOException();
+//			}
+//			else{
+//				str.append(getFileChecksum(path));
+//			}
 		}
 		return str.toString();
     }
