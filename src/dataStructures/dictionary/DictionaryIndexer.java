@@ -47,17 +47,16 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 
     @Override
     protected void readIndexedFile() throws WrongMD5ChecksumException, FileNotFoundException {
-        FileInputStream file = new FileInputStream(fileIndexerPath);
-        try (ObjectInputStream in = new ObjectInputStream(file)){
+        try (FileInputStream file = new FileInputStream(fileIndexerPath);
+             ObjectInputStream in = new ObjectInputStream(file)) {
             String originCashedChecksum = (String) in.readObject();
-            if (origin.getChecksum().equals(originCashedChecksum)) {
-                Object dictObj = in.readObject();
-                if (dictObj instanceof HashMapWrapper) {
-                    HashMapWrapper dictReader = (HashMapWrapper) dictObj;
-                    this.dict = dictReader.getMap();
-                }else throw new WrongMD5ChecksumException();
-            }else throw new WrongMD5ChecksumException();
-            file.close();
+            if (!origin.getChecksum().equals(originCashedChecksum))
+                throw new WrongMD5ChecksumException();
+            Object dictObj = in.readObject();
+            if (!(dictObj instanceof HashMapWrapper) )
+                throw new WrongMD5ChecksumException();
+            HashMapWrapper dictReader = (HashMapWrapper) dictObj;
+            this.dict = dictReader.getMap();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -66,12 +65,13 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     @Override
     protected void writeIndexFile() {
         try (FileOutputStream file = new FileOutputStream(fileIndexerPath);
-             ObjectOutputStream out = new ObjectOutputStream(file)){
+             ObjectOutputStream out = new ObjectOutputStream(file)) {
             String originChecksum = origin.getChecksum();
             out.writeObject(originChecksum);
             out.writeObject(dict);
+            //out.writeObject(origin);
         } catch (IOException e) {
-            System.err.println("writeIndexFile error:"+e.getMessage());
+            System.err.println("writeIndexFile error:" + e.getMessage());
         }
     }
 
@@ -79,17 +79,17 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     protected void indexCorpus() {
         final Pattern p = Pattern.compile(regexForWord);
         final Matcher m = p.matcher("");
-        for (Entry entry:origin){
-            for (Block block: entry){
+        for (Entry entry : origin) {
+            for (Block block : entry) {
                 String blockString = block.toString();
                 m.reset(blockString);
-                while (m.find()){
-                    String word =m.group();
+                while (m.find()) {
+                    String word = m.group();
                     word = STEMMER.stem(word);
                     int key = word.hashCode();
                     if (!dict.containsKey(key))
-                        dict.put(key,new LinkedList<>());
-                    dict.get(key).add(new Word(block, m.start(),m.end()));
+                        dict.put(key, new LinkedList<>());
+                    dict.get(key).add(new Word(block, m.start(), m.end()));
                 }
             }
         }
