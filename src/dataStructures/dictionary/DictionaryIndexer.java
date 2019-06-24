@@ -121,6 +121,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             file.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
