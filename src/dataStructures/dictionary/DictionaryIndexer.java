@@ -12,6 +12,7 @@ import utils.Stemmer;
 import utils.WrongMD5ChecksumException;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         this.origin = origin;
         this.dict = new HashMap<>();
         this.fileIndexerPath = TYPE_NAME.toString() + "_" + origin.getParsingRule().getClass().toString() +
-                "_" + origin.getPath();
+                "_" + Paths.get(origin.getPath()).getFileName();
 
     }
 

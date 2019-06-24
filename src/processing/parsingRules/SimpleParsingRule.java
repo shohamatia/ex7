@@ -68,7 +68,4 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 	private String getSplitRegex() {
 		return "(.*(\\n|\\r\\n|\\r){2}){1,5}";
 	}
-
-
-
 }

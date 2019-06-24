@@ -49,9 +49,7 @@ public abstract class Aindexer<T extends IsearchStrategy> {
             indexCorpus();
             writeIndexFile();
             System.out.println("success on indexing file");
-
         }
-
     }
 
     /**
