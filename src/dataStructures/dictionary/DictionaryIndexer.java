@@ -77,9 +77,8 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                     this.origin = (Corpus) originObj;
                 }else throw new WrongMD5ChecksumException();
             }else throw new WrongMD5ChecksumException();
-            Object dictByteArray = in.readObject();
-            byte[] dictAsBytes = getObjectAsBytes(dictByteArray);
-            if (MD5.getMd5(dictAsBytes).equals(MD5.getMd5(dictChecksum))){
+            String dictCashedChecksum = (String) in.readObject();
+            if (dictCashedChecksum.equals(dictChecksum)){
                 Object dictObj = in.readObject();
                 if (dictObj instanceof HashMapWrapper) {
                     HashMapWrapper dictReader = (HashMapWrapper) dictObj;
