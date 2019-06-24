@@ -59,6 +59,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             this.dict = dictReader.getMap();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
+            throw new FileNotFoundException();
         }
     }
 
