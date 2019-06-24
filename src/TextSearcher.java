@@ -58,8 +58,10 @@ public class TextSearcher {
         String query = conf.getQuery();
         List<? extends WordResult> results = indexer.asSearchInterface().search(query);
         System.out.println(String.format(QUERY_RESULTS, query));
-        if(results==null||results.size()==0)
+        if(results==null||results.size()==0) {
             System.out.println("empty or null results");
+            return;
+        }
         for (int i = 0; i< Math.min(results.size(),10);i++){
             WordResult result = results.get(i);
             try {
