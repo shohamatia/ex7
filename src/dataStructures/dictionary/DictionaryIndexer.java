@@ -67,24 +67,16 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         return bytes;
     }
 
-    private String[] getObjectsChecksum(){
-        String[] stringArray = new String[2];
-        byte[] curOriginAsBytes = getObjectAsBytes(this.origin);
-        stringArray[0] = MD5.getMd5(curOriginAsBytes);
-        byte[] curDictAsBytes = getObjectAsBytes(this.dict);
-        stringArray[1] = MD5.getMd5(curDictAsBytes);
-        return stringArray;
-    }
-
     @Override
     protected void readIndexedFile() throws WrongMD5ChecksumException, FileNotFoundException {
-        String originChecksum = getObjectsChecksum()[0];
-        String dictChecksum = getObjectsChecksum()[1];
+        byte[] curOriginAsBytes = getObjectAsBytes(this.origin);
+        String originChecksum = MD5.getMd5(curOriginAsBytes);
+        byte[] curDictAsBytes = getObjectAsBytes(this.dict);
+        String dictChecksum = MD5.getMd5(curDictAsBytes);
         FileInputStream file = new FileInputStream(fileIndexerPath);
         try (ObjectInputStream in = new ObjectInputStream(file)){
-            Object originByteArray = in.readObject();
-            byte[] originAsBytes = getObjectAsBytes(originByteArray);
-            if (MD5.getMd5(originChecksum).equals(MD5.getMd5(originAsBytes))) {
+            String originCashedChecksum = (String) in.readObject();
+            if (originChecksum.equals(originCashedChecksum)) {
                 Object originObj = in.readObject();
                 if (originObj instanceof Corpus) {
                     this.origin = (Corpus) originObj;
@@ -101,14 +93,16 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             }else throw new WrongMD5ChecksumException();
             file.close();
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
     @Override
     protected void writeIndexFile() {
-        String originChecksum = getObjectsChecksum()[0];
-        String dictChecksum = getObjectsChecksum()[1];
+        byte[] curOriginAsBytes = getObjectAsBytes(this.origin);
+        String originChecksum = MD5.getMd5(curOriginAsBytes);
+        byte[] curDictAsBytes = getObjectAsBytes(this.dict);
+        String dictChecksum = MD5.getMd5(curDictAsBytes);
         HashMapWrapper dictToWrite = new HashMapWrapper(dict);
         try {
             FileOutputStream file = new FileOutputStream(fileIndexerPath);
