@@ -50,7 +50,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 				LinkedList<String> metadata = new LinkedList<>();
 				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
 						"*$", "") + "\"");
-				metadata.add(getSpeakers(m.group(3)));
+				metadata.add(getSpeakers(block.specialToString()));
 				block.setMetadata(metadata);
 				blocks.add(block);
 			}
@@ -116,22 +116,28 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
         return by.toArray(new String[0]);
     }
 
-    private String getSpeakers(String file) {
-        StringBuilder getSpeaker = new StringBuilder();
-        final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SPEAKER);
-        assert file != null;
-        final Matcher m = p.matcher(file);
-        while (m.find()) {
-            getSpeaker.append(m.group()).append(" ,");
-        }
-        String speakersString = getSpeaker.toString();
-        if (speakersString.length() > 2) {
-            if (speakersString.substring(speakersString.length() - 2).equals(" ,")) {
-                speakersString = speakersString.substring(0, speakersString.length() - 2);
-            }
-        }
-        return speakersString;
-    }
+	private String getSpeakers(String file){
+		LinkedList<String> getSpeaker = new LinkedList<>();
+		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SPEAKER);
+		assert file != null;
+		final Matcher m = p.matcher(file);
+		while (m.find()){
+			if (!getSpeaker.contains("\"" + m.group().replaceAll("[^A-Z]*", "") + "\"")) {
+				getSpeaker.add("\"" + m.group().replaceAll("[^A-Z]*", "") + "\"");
+			}
+		}
+		StringBuilder builder = new StringBuilder();
+		for (String speaker : getSpeaker){
+			builder.append(speaker).append(", ");
+		}
+		String speakersString = builder.toString();
+		if (speakersString.length() > 2) {
+			if (speakersString.substring(speakersString.length() - 2).equals(", ")) {
+				speakersString = speakersString.substring(0, speakersString.length() - 2);
+			}
+		}
+		return "With the characters: " + speakersString;
+	}
 
     public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
         return null;
