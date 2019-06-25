@@ -74,6 +74,9 @@ public class Block implements Serializable {
 			for (int i = 0; i < bytes.size(); i++){
 				byteArray[i] = bytes.get(i);
 			}
+//			System.out.println("BYTE ARRAY!!!!");
+//			System.out.println(byteArray);
+//			String s = new String(byteArray);
 			return new String(byteArray);
 		} catch (IOException e) {
 			System.out.println("file reading error");

@@ -1,15 +1,18 @@
 package processing.textStructure;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * This class represents a result containing a single string (single word or multiple words treated as one)
  */
 public class WordResult {
-    private final static String RESULTS_SEPARATOR = String.join("", Collections.nCopies(256, "="));
+    private final static String RESULTS_SEPARATOR =
+            String.join("", Collections.nCopies(256, "=")) + "\n";
     private long idxInBlk;
     private Block location;
     protected String[] content;
@@ -57,6 +60,7 @@ public class WordResult {
 
     /**
      * Method for printing the result
+     *
      * @return The result representation as defined by the "printing results" requirement in the exercise
      * instructions.
      * @throws IOException
@@ -64,16 +68,19 @@ public class WordResult {
     public String resultToString() throws IOException {
         List<String> metaData = this.location.getMetadata();
         StringBuilder representation = new StringBuilder(RESULTS_SEPARATOR);
-        representation.append("\n").append(Arrays.toString(this.content));
-        for (int i = 0; i < metaData.size(); i++){
-            if (i != metaData.size() - 1){
+        long fullStartLoc = this.idxInBlk + this.location.getStartIndex();
+        RandomAccessFile raf = this.location.getRAF();
+        raf.seek(fullStartLoc);
+        while (raf.getFilePointer() < fullStartLoc + this.content.length)
+            representation.append(raf.readLine());
+        for (int i = 0; i < metaData.size(); i++) {
+            if (i != metaData.size() - 1) {
                 representation.append(metaData.get(i)).append("\n");
-            }else {
+            } else {
                 representation.append(metaData.get(i));
             }
+            //TODO probably need a return at the ed of last line as well
         }
         return representation.toString();
     }
-
-
 }

@@ -18,8 +18,6 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 
     }
 
-
-
 	@Override
 	public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
 
@@ -40,7 +38,7 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 			Long lastIndex = inputFile.length();
 			for (long i = endOfBlockOffset; i < lastIndex - rawChunkSize; i += rawChunkSize) {
 				inputFile.seek(i);
-				int bytesRead = inputFile.read(rawBytes);
+				inputFile.read(rawBytes);
 				String rawBlock = new String(rawBytes);
 				m.reset(rawBlock);
 				while (m.find()) {
