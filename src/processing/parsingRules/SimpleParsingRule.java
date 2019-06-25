@@ -53,7 +53,6 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("GOT PARSING");
 		return entryBlocks;
 
 	}

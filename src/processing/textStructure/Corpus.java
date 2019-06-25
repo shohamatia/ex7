@@ -30,14 +30,12 @@ public class Corpus implements Iterable<Entry>, Serializable {
 
 		File[] list = source.listFiles();
 
-		System.out.println("Starting to get entries");
-
-		if(list == null)
-			System.out.println("received non directory source file");
+		if(list == null) {
+			System.out.println("Error:received non directory source file");
+			return;
+		}
 
 		recursiveFile(list);
-
-		System.out.println("finished getting entries");
     }
 
 	/** this method goes over all the files in the directory recursively

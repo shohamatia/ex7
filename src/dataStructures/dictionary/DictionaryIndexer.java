@@ -92,7 +92,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         final Matcher m = p.matcher("");
         for (Entry entry : origin) {
             for (Block block : entry) {
-                String blockString = block.specialToString();
+                String blockString = block.toString();
                 m.reset(blockString);
                 while (m.find()) {
                     String word = m.group();

@@ -58,7 +58,7 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
 						"*$", "") + "\"");
 				assert block != null;
-				metadata.add(getSpeakers(block.specialToString()));
+				metadata.add(getSpeakers(block.toString()));
 				metadata.add(credits);
 				block.setMetadata(metadata);
 				blocks.add(block);
