@@ -10,6 +10,7 @@ import java.util.OptionalLong;
 public class MultiWordResult extends WordResult implements Comparable<MultiWordResult> {
     private long[] wordPositions;
     private int confidence;
+    private long min, max;
 
     private MultiWordResult(Block blk, String[] query, long idx) {
         super(blk, query, idx);
@@ -25,17 +26,36 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
     public MultiWordResult(String[] query, Block block, long[] locs) {
         super(block, query, Arrays.stream(locs).min().orElse(0));
         this.wordPositions = locs;
+        calculateMin();
+        calculateMax();
+        calcConfidence();
+    }
+
+    private void calculateMin() {
+        this.min = Arrays.stream(wordPositions).min().orElse(0);
+    }
+
+    private void calculateMax() {
+        max = 0;
+        int maxArrayPosition = 0;
+        for (int i = 0; i < wordPositions.length; i++) {
+            long potentialMax = Math.max(max, wordPositions[i]);
+            if (max != potentialMax) {
+                max = potentialMax;
+                maxArrayPosition = i;
+            }
+        }
+        max += this.content[maxArrayPosition].length();
     }
 
     /**
      * Calculate the confidence level of a result, defined by the the negative sum of word distances, such
      * that the highest confidence level is the closest to the original query, and the closest to zero.
      *
-     * @param locs The locations of the query words in the text
      * @return The sum of distances
      */
-    private int calcConfidence(long[] locs) {
-        return 0;
+    private void calcConfidence() {
+        confidence = (int) (this.min - this.max);
     }
 
     /**
@@ -59,16 +79,6 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
      */
     @Override
     public String resultToString() throws IOException {
-        long max =0;
-        int maxArrayPosition = 0;
-        for (int i = 0; i<wordPositions.length;i++){
-            long potentialMax = Math.max(max,wordPositions[i]);
-            if(max!=potentialMax){
-                max = potentialMax;
-                maxArrayPosition = i;
-            }
-        }
-        max += this.content[maxArrayPosition].length();
         return super.resultToString(max);
     }
 

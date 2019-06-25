@@ -3,14 +3,12 @@ import dataStructures.dictionary.DictionaryIndexer;
 import dataStructures.naive.NaiveIndexer;
 import dataStructures.naive.NaiveIndexerRK;
 import processing.textStructure.Corpus;
-import processing.textStructure.Word;
 import processing.textStructure.WordResult;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 
 /**
