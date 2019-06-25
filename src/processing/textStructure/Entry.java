@@ -19,6 +19,7 @@ public class Entry implements Iterable<Block>, Serializable {
 	private String path;
 	private File file;
 	private IparsingRule parseRule;
+	private String name;
 
 	String getPath(){
 	    return this.path;
@@ -29,6 +30,7 @@ public class Entry implements Iterable<Block>, Serializable {
 	    this.path = filePath;
 		this.file = new File(this.path);
 		this.parseRule = parseRule;
+		this.name = this.file.getName();
 	}
 
 	void populate(){
@@ -36,7 +38,7 @@ public class Entry implements Iterable<Block>, Serializable {
 			RandomAccessFile inputFile = new RandomAccessFile(file, "rw");
 			blocksList = new ArrayList<>(parseRule.parseFile(inputFile));
 			for (Block block: blocksList){
-				block.setEntryName(this.path);
+				block.setEntryName(this.name);
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
