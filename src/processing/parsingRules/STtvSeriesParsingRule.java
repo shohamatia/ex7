@@ -32,6 +32,7 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 		getSceneBlock(file, true);
 		String curBlock;
 		String credits = getCredits(file);
+		String header = getHeader(file);
 		String nextBlock = getSceneBlock(file, false);
 		long curPointer = 0;
 		while (!Objects.requireNonNull(nextBlock).isEmpty()){
@@ -52,12 +53,11 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 					break;
 				}
 				LinkedList<String> metadata = new LinkedList<>();
-				metadata.add("From the episode \"" + getHeader(file) + " of the TV show: \"STAR TREK: " +
+				metadata.add("From the episode \"" + header + " of the TV show: \"STAR TREK: " +
 						"THE NEXT GENERATION\"");
 				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
 						"*$", "") + "\"");
 				assert block != null;
-				System.out.println(sceneNumber);
 				metadata.add(getSpeakers(block.specialToString()));
 				metadata.add(credits);
 				block.setMetadata(metadata);
@@ -116,7 +116,7 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 		final Matcher matcherETitle = getCreditsPattern.matcher(fileString);
 		String eTitle = " ";
 		if (matcherETitle.find()){
-			eTitle = matcherETitle.group();
+			eTitle = matcherETitle.group(1);
 		}
 		return eTitle;
 	}
