@@ -45,7 +45,7 @@ public class Block implements Serializable {
 
     void setEntryName(String entryName) {
         this.entryName = entryName;
-        metaData.add("Take out of entry: \"" + entryName + "\"");
+        metaData.add("Taken out of entry: \"" + entryName + "\"");
     }
 
 
