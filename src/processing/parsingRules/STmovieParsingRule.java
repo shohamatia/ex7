@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 
 
 public class STmovieParsingRule implements IparsingRule, Serializable {
-	public static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 1L;
 
-	public STmovieParsingRule() {
-	}
+    public STmovieParsingRule() {
+    }
 
 
 	private LinkedList<Block> getScene(RandomAccessFile file){
@@ -65,103 +65,102 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 	}
 
 
+    private String getSceneBlock(RandomAccessFile file, boolean metadata) {
+        final Pattern sceneLine = Pattern.compile(parsingRuleRegex.SCENE_TITLE);
+        final Matcher thisLine = sceneLine.matcher("");
+        StringBuilder fileString = new StringBuilder();
+        int cunt = 0;
+        try {
+            if (metadata) {
+                file.seek(0);
+                cunt = 1;
+            }
+            if (file.getFilePointer() == file.length() - 1) {
+                return null;
+            }
+            String nextLine = "";
+            String curLine;
+            while (cunt != 2 && file.getFilePointer() < file.length()) {
+                curLine = nextLine;
+                fileString.append(curLine + "\n");
+                long curPointer = file.getFilePointer();
+                nextLine = file.readLine();
+                if (thisLine.reset(nextLine).find()) {
+                    if (cunt == 1) {
+                        file.seek(curPointer);
+                    }
+                    cunt += 1;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(fileString);
+    }
 
-	private String getSceneBlock(RandomAccessFile file, boolean metadata){
-		final Pattern sceneLine = Pattern.compile(parsingRuleRegex.SCENE_TITLE);
-		final Matcher thisLine = sceneLine.matcher("");
-		StringBuilder fileString = new StringBuilder();
-		int cunt = 0;
-		try {
-			if (metadata){
-				file.seek(0);
-				cunt = 1;
-			}
-			if (file.getFilePointer() == file.length() - 1){
-				return null;
-			}
-			String nextLine = "";
-			String curLine;
-			while (cunt != 2 && file.getFilePointer() < file.length()){
-				curLine = nextLine;
-				fileString.append(curLine + "\n");
-				long curPointer = file.getFilePointer();
-				nextLine = file.readLine();
-				if (thisLine.reset(nextLine).find()){
-					if (cunt == 1) {
-						file.seek(curPointer);
-					}
-					cunt += 1;
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return String.valueOf(fileString);
-	}
+    private String[] getCredits(RandomAccessFile file) {
+        String fileString = getSceneBlock(file, true);
+        LinkedList<String> by = new LinkedList<>();
+        final Pattern getCreditsPattern = Pattern.compile(parsingRuleRegex.CREDITS);
+        assert fileString != null;
+        final Matcher matcherCredits = getCreditsPattern.matcher(fileString);
+        String credits = " ";
+        if (matcherCredits.find()) {
+            credits = matcherCredits.group();
+        }
+        final Pattern p = Pattern.compile(parsingRuleRegex.CREDIT_SPLITTER);
+        final Matcher m = p.matcher(credits);
+        while (m.find()) {
+            by.add(m.group("whatIsBy") + " By: " + "\"" + m.group("byWhom") + "\"");
+        }
+        return by.toArray(new String[0]);
+    }
 
-	private String[] getCredits(RandomAccessFile file){
-		String fileString = getSceneBlock(file, true);
-		LinkedList<String> by = new LinkedList<>();
-		final Pattern getCreditsPattern = Pattern.compile(parsingRuleRegex.CREDITS);
-		assert fileString != null;
-		final Matcher matcherCredits = getCreditsPattern.matcher(fileString);
-		String credits = " ";
-		if (matcherCredits.find()){
-			credits = matcherCredits.group();
-		}
-		final Pattern p = Pattern.compile(parsingRuleRegex.CREDIT_SPLITTER);
-		final Matcher m = p.matcher(credits);
-		while (m.find()) {
-			by.add(m.group("whatIsBy") + " By: " + "\"" + m.group("byWhom") + "\"");
-		}
-		return by.toArray(new String[0]);
-	}
+    private String getSpeakers(String file) {
+        StringBuilder getSpeaker = new StringBuilder();
+        final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SPEAKER);
+        assert file != null;
+        final Matcher m = p.matcher(file);
+        while (m.find()) {
+            getSpeaker.append(m.group()).append(" ,");
+        }
+        String speakersString = getSpeaker.toString();
+        if (speakersString.length() > 2) {
+            if (speakersString.substring(speakersString.length() - 2).equals(" ,")) {
+                speakersString = speakersString.substring(0, speakersString.length() - 2);
+            }
+        }
+        return speakersString;
+    }
 
-	private String getSpeakers(String file){
-		StringBuilder getSpeaker = new StringBuilder();
-		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SPEAKER);
-		assert file != null;
-		final Matcher m = p.matcher(file);
-		while (m.find()){
-			getSpeaker.append(m.group()).append(" ,");
-		}
-		String speakersString = getSpeaker.toString();
-		if (speakersString.length() > 2) {
-			if (speakersString.substring(speakersString.length() - 2).equals(" ,")) {
-				speakersString = speakersString.substring(0, speakersString.length() - 2);
-			}
-		}
-		return speakersString;
-	}
+    public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
+        return null;
+    }
 
-	public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
-		return null;
-	}
-
-	public List<Block> parseFile(RandomAccessFile inputFile) {
-		StringBuilder entryCredits = new StringBuilder();
-		String[] creditsList = getCredits(inputFile);
-		for (String credit : creditsList){
-			entryCredits.append(credit).append(", ");
-		}
-		String credits = entryCredits.toString();
-		if (credits.length() > 2) {
+    public List<Block> parseFile(RandomAccessFile inputFile) {
+        StringBuilder entryCredits = new StringBuilder();
+        String[] creditsList = getCredits(inputFile);
+        for (String credit : creditsList) {
+            entryCredits.append(credit).append(", ");
+        }
+        String credits = entryCredits.toString();
+        if (credits.length() > 2) {
             if (credits.substring(credits.length() - 2).equals(", ")) {
                 credits = credits.substring(0, credits.length() - 2);
             }
         }
-		LinkedList<Block> blocks = getScene(inputFile);
-		for (Block block : blocks){
-			LinkedList<String> metadata = new LinkedList<>();
-			List<String> curMetadata = block.getMetadata();
-			metadata.addAll(curMetadata);
-			metadata.add(credits);
-			block.setMetadata(metadata);
-		}
-		return blocks;
-	}
+        LinkedList<Block> blocks = getScene(inputFile);
+        for (Block block : blocks) {
+            LinkedList<String> metadata = new LinkedList<>();
+            List<String> curMetadata = block.getMetadata();
+            metadata.addAll(curMetadata);
+            metadata.add(credits);
+            block.setMetadata(metadata);
+        }
+        return blocks;
+    }
 
-	public void printResult(WordResult wordResult)  {
-	
-	}
+    public void printResult(WordResult wordResult) {
+
+    }
 }

@@ -23,12 +23,15 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
      * @param block The block where this result came from
      * @param locs  The indices of the words in the block
      */
-    public MultiWordResult(String[] query, Block block, long[] locs) {
+    public MultiWordResult(String[] query, Block block, long[] locs) throws IllegalArgumentException{
         super(block, query, Arrays.stream(locs).min().orElse(0));
         this.wordPositions = locs;
         calculateMin();
         calculateMax();
         calcConfidence();
+        long totalQueryLength = String.join(" ", query).length();
+        if(max-min>3*totalQueryLength+40)
+            throw new IllegalArgumentException("This result is too big");
     }
 
     private void calculateMin() {
@@ -66,8 +69,7 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
      */
     @Override
     public int compareTo(MultiWordResult o) {
-        return this.confidence - o.confidence;
-        //TODO check that this is in the right order
+        return o.confidence - this.confidence;
     }
 
     /**

@@ -5,6 +5,7 @@ import processing.textStructure.MultiWordResult;
 import processing.textStructure.Word;
 import processing.textStructure.WordResult;
 import utils.Stemmer;
+import utils.Stopwords;
 
 import java.util.*;
 
@@ -19,7 +20,9 @@ public class DictionarySearch implements IsearchStrategy {
 
     @Override
     public List<? extends WordResult> search(String query) {
+//        String stemmedQuery = Stopwords.removeStemmedStopWords(query);
         String[] queryWords = query.split(" ");
+
 
         HashMap<String, List<Word>> queryWordLists = new HashMap<>();
         for (String singleQuery : queryWords)
@@ -44,32 +47,37 @@ public class DictionarySearch implements IsearchStrategy {
 
 
         List<MultiWordResult> multiWordResults = new LinkedList<>();
-        //make cartesian product from lists, iterate over results place into thingy
         for (Block block : queryWordListsByBlock.keySet()) {
             List<HashMap<String, Word>> fullResults = cartesianProduct(queryWordListsByBlock.get(block));
-            long[] locs = new long[queryWords.length];
-            for (HashMap<String, Word> result : fullResults) {
-                for (int i = 0; i < queryWords.length; i++) {
-                    locs[i] = result.get(queryWords[i]).getEntryIndex();
-                }
 
+            for (HashMap<String, Word> result : fullResults) {
+                long[] locs = new long[queryWords.length];
+                for (int i = 0; i < queryWords.length; i++) {
+                    Word word = result.get(queryWords[i]);
+                    locs[i] = word.getEntryIndex() - block.getStartIndex();
+                }
+                MultiWordResult multiWordResult;
+                try {
+                    multiWordResult = new MultiWordResult(
+                            queryWords, block, locs);
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+                multiWordResults.add(multiWordResult);
             }
-            MultiWordResult multiWordResult = new MultiWordResult(
-                    queryWords, block, locs);
-            multiWordResults.add(multiWordResult);
+
         }
         multiWordResults.sort(MultiWordResult::compareTo);
         return multiWordResults;
     }
 
     private List<Word> singleWordSearch(String singleWordQuery) {
+        singleWordQuery = singleWordQuery.toLowerCase();
         int hash = stemmer.stem(singleWordQuery).hashCode();
         if (!dict.containsKey(hash))
             return null;
         return dict.get(hash);
     }
-
-    //(\s*(?<whatIsBy>\w+) by:\s*(?<who>((( *\w+ *)+)&*))+\s{2})
 
     private List<HashMap<String, Word>> cartesianProduct(HashMap<String, List<Word>> map) {
         if (map.keySet().size() == 0)

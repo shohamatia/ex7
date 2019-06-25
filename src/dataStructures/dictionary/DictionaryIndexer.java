@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
  * locations within the files.
  */
 public class DictionaryIndexer extends Aindexer<DictionarySearch> {
-    private static final String regexForWord = "[^\\s]+";
+    private static final String regexForWord = "[a-zA-Z0-9]+";
     private static final Stemmer STEMMER = new Stemmer();
     public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
     private final String fileIndexerPath;
@@ -54,16 +55,16 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
 
             //Read Dict
             Object dictObj = in.readObject();
-            if (!(dictObj instanceof HashMapWrapper) )
+            if (!(dictObj instanceof HashMapWrapper))
                 throw new WrongMD5ChecksumException();
             HashMapWrapper dictReader = (HashMapWrapper) dictObj;
             this.dict = dictReader.getMap();
 
             //Read origin
             Object originObj = in.readObject();
-            if (!(originObj instanceof Corpus) )
+            if (!(originObj instanceof Corpus))
                 throw new WrongMD5ChecksumException();
-            this.origin = (Corpus)originObj;
+            this.origin = (Corpus) originObj;
 
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
@@ -94,16 +95,18 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                 m.reset(blockString);
                 while (m.find()) {
                     String word = m.group();
-                    word = STEMMER.stem(word);
+                    word = STEMMER.stem(word.toLowerCase());
+                    if(word.isEmpty())
+                        continue;
                     int key = word.hashCode();
-                    if (!dict.containsKey(key))
-                        dict.put(key, new LinkedList<>());
-                    dict.get(key).add(new Word(block, m.start(), m.end()));
+                    dict.putIfAbsent(key, new LinkedList<>());
+                    Word newWord = new Word(block, m.start(), m.end());
+                    dict.get(key).add(newWord);
                 }
             }
         }
     }
-
+//-1137201385
 
     @Override
     public IparsingRule getParseRule() {

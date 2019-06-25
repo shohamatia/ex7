@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class WordResult {
     private final static String RESULTS_SEPARATOR =
-            String.join("", Collections.nCopies(256, "=")) + "\n";
+            String.join("", Collections.nCopies(256, "="));
     private long idxInBlk;
     private Block location;
     protected String[] content;
@@ -67,7 +67,6 @@ public class WordResult {
      */
     public String resultToString() throws IOException {
         long end = this.idxInBlk +
-                this.location.getStartIndex() +
                 String.join(" ", this.content).length();
         return resultToString(end);
     }
@@ -78,8 +77,8 @@ public class WordResult {
         long fullStartLoc = this.idxInBlk + this.location.getStartIndex();
         RandomAccessFile raf = this.location.getRAF();
         raf.seek(fullStartLoc);
-        while (raf.getFilePointer() < endLoc)
-            representation.append(raf.readLine());
+        while (raf.getFilePointer() < endLoc +this.location.getStartIndex())
+            representation.append("\n").append(raf.readLine());
         for (String datum : metaData) {
             if (datum.isEmpty())
                 continue;
