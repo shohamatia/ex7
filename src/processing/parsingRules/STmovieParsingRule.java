@@ -38,7 +38,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 				sceneNumber = m.group("sceneNumber");
 				Block block = null;
 				try {
-					block = new Block(file, curPointer + m.start(3), file.getFilePointer());
+					block = new Block(file, curPointer + m.start(3) - 1, file.getFilePointer());
 					if (file.getFilePointer() >= file.length()){
 						throw new IllegalArgumentException();
 					}
@@ -50,7 +50,6 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 				LinkedList<String> metadata = new LinkedList<>();
 				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
 						"*$", "") + "\"");
-				metadata.add("Taken out of the entry \"");
 				metadata.add(getSpeakers(m.group(3)));
 				block.setMetadata(metadata);
 				blocks.add(block);
@@ -84,7 +83,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 			String curLine;
 			while (cunt != 2 && file.getFilePointer() < file.length()){
 				curLine = nextLine;
-				fileString.append(curLine);
+				fileString.append(curLine + "\n");
 				long curPointer = file.getFilePointer();
 				nextLine = file.readLine();
 				if (thisLine.reset(nextLine).find()){

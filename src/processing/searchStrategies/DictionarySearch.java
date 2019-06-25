@@ -69,12 +69,13 @@ public class DictionarySearch implements IsearchStrategy {
         return dict.get(hash);
     }
 
+    //(\s*(?<whatIsBy>\w+) by:\s*(?<who>((( *\w+ *)+)&*))+\s{2})
+
     private List<HashMap<String, Word>> cartesianProduct(HashMap<String, List<Word>> map) {
         if (map.keySet().size() == 0)
-            return new LinkedList<>() {{
+            return new LinkedList<HashMap<String, Word>>() {{
                 add(new HashMap<>());
             }};
-
         String key = map.keySet().iterator().next();
         List<Word> words = map.get(key);
         map.remove(key);
