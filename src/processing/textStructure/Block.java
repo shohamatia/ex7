@@ -24,7 +24,7 @@ public class Block implements Serializable {
      * @param endIdx    end index of the block within the file
      */
     public Block(RandomAccessFile inputFile, long startIdx, long endIdx)
-            throws IllegalArgumentException , IOException{
+            throws IllegalArgumentException, IOException {
         this.inputFile = inputFile;
         this.startIdx = startIdx;
         this.endIdx = endIdx;
@@ -45,6 +45,7 @@ public class Block implements Serializable {
 
     void setEntryName(String entryName) {
         this.entryName = entryName;
+        metaData.add("Take out of entry: \"" + entryName + "\"");
     }
 
 
