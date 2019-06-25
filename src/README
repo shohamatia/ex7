@@ -1,0 +1,44 @@
+shoham.at
+yreisler
+
+
+
+=============================
+=      File description     =
+=============================
+
+
+
+===========================================
+=          Answers to questions           =
+===========================================
+
+- Given a pattern P of length m and a text string S of length n, the time complexity of the naive search
+algorithm is going throw all the substrings of length m meaning (if P is from the same characters of S or if
+is the same but the last one, in that case we will run n-m+1 times on the string for m times, O(m*(n-m+1)).
+
+====================
+=   pseudo-code:   =
+====================
+NaiveSearch(pat, txt):
+    m = pat.len
+    n = tat.len
+    for i in range{0, n-m+1}:
+        j=0
+        for j in range{0 , m}:
+            if txt[i+j] is not equal to pat[j]:
+                brake
+        if j == m - 1:
+            return i
+
+- Implementation of metadata:
+    we give the information about the characters in the scene, the scene name and number, the credits of this
+    episode/ movie and the file it was found in.
+    we store the metadata in Linked List and add to it when we create the blocks in the parseFile method.
+
+
+
+
+============================
+=  Implementation issues   =
+============================
