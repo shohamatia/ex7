@@ -6,7 +6,6 @@ import processing.textStructure.WordResult;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -25,23 +24,41 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 		LinkedList<Block> blocks = new LinkedList<>();
 		String sceneNumber;
 		String sceneName;
-		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SCENE_EXTRACTOR);
+		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SCENE_HEADER);
 		final Matcher m = p.matcher(" ") ;
 		getSceneBlock(file, true);
 		String curBlock;
 		String nextBlock = getSceneBlock(file, false);
+		long curPointer = 0;
 		while (!Objects.requireNonNull(nextBlock).isEmpty()){
 			curBlock = nextBlock;
 			m.reset(curBlock);
 			if (m.find()){
 				sceneName = m.group("sceneName");
 				sceneNumber = m.group("sceneNumber");
-				Block block = new Block(file, m.start(3), m.end(3));
+				Block block = null;
+				try {
+					block = new Block(file, curPointer + m.start(3), file.getFilePointer());
+					if (file.getFilePointer() >= file.length()){
+						throw new IllegalArgumentException();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}catch (IllegalArgumentException e){
+					break;
+				}
 				LinkedList<String> metadata = new LinkedList<>();
-				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName + "\"");
+				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
+						"*$", "") + "\"");
+				metadata.add("Taken out of the entry \"");
 				metadata.add(getSpeakers(m.group(3)));
 				block.setMetadata(metadata);
 				blocks.add(block);
+			}
+			try {
+				curPointer = file.getFilePointer();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 			nextBlock = getSceneBlock(file, false);
 		}
@@ -54,19 +71,28 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 		final Pattern sceneLine = Pattern.compile(parsingRuleRegex.SCENE_TITLE);
 		final Matcher thisLine = sceneLine.matcher("");
 		StringBuilder fileString = new StringBuilder();
+		int cunt = 0;
 		try {
 			if (metadata){
 				file.seek(0);
+				cunt = 1;
 			}
 			if (file.getFilePointer() == file.length() - 1){
 				return null;
 			}
 			String nextLine = "";
 			String curLine;
-			while (!thisLine.reset(nextLine).find()){
+			while (cunt != 2 && file.getFilePointer() < file.length()){
 				curLine = nextLine;
 				fileString.append(curLine);
+				long curPointer = file.getFilePointer();
 				nextLine = file.readLine();
+				if (thisLine.reset(nextLine).find()){
+					if (cunt == 1) {
+						file.seek(curPointer);
+					}
+					cunt += 1;
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -89,7 +115,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 		while (m.find()) {
 			by.add(m.group("whatIsBy") + " By: " + "\"" + m.group("byWhom") + "\"");
 		}
-		return (String[]) by.toArray();
+		return by.toArray(new String[0]);
 	}
 
 	private String getSpeakers(String file){
@@ -101,8 +127,10 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 			getSpeaker.append(m.group()).append(" ,");
 		}
 		String speakersString = getSpeaker.toString();
-		if (speakersString.substring(speakersString.length() - 2).equals(" ,")){
-			speakersString = speakersString.substring(0, speakersString.length() - 2);
+		if (speakersString.length() > 2) {
+			if (speakersString.substring(speakersString.length() - 2).equals(" ,")) {
+				speakersString = speakersString.substring(0, speakersString.length() - 2);
+			}
 		}
 		return speakersString;
 	}
@@ -118,9 +146,11 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 			entryCredits.append(credit).append(", ");
 		}
 		String credits = entryCredits.toString();
-		if (credits.substring(credits.length() - 2).equals(", ")){
-			credits = credits.substring(0, credits.length() - 2);
-		}
+		if (credits.length() > 2) {
+            if (credits.substring(credits.length() - 2).equals(", ")) {
+                credits = credits.substring(0, credits.length() - 2);
+            }
+        }
 		LinkedList<Block> blocks = getScene(inputFile);
 		for (Block block : blocks){
 			LinkedList<String> metadata = new LinkedList<>();

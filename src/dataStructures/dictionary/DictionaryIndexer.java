@@ -7,7 +7,6 @@ import processing.textStructure.Block;
 import processing.textStructure.Corpus;
 import processing.textStructure.Entry;
 import processing.textStructure.Word;
-import utils.MD5;
 import utils.Stemmer;
 import utils.WrongMD5ChecksumException;
 
@@ -91,7 +90,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
         final Matcher m = p.matcher("");
         for (Entry entry : origin) {
             for (Block block : entry) {
-                String blockString = block.toString();
+                String blockString = block.specialToString();
                 m.reset(blockString);
                 while (m.find()) {
                     String word = m.group();

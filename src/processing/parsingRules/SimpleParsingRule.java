@@ -19,7 +19,7 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
     }
 
 	@Override
-	public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
+	public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) throws IOException {
 
 		return new Block(inputFile, startPos, endPos);
 	}

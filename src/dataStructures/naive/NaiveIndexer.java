@@ -62,7 +62,7 @@ public class NaiveIndexer extends Aindexer<NaiveSearch> {
 
 	@Override
 	public NaiveSearch asSearchInterface() {
-		return this.isRK ? new NaiveSearch(this.origin) : new NaiveSearchRK(this.origin);
+		return this.isRK ? new NaiveSearchRK(this.origin) : new NaiveSearch(this.origin);
 	}
 
 

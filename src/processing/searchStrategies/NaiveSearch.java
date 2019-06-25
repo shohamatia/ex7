@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class NaiveSearch implements IsearchStrategy {
-    private Corpus origin;
+    protected Corpus origin;
 
     public NaiveSearch(Corpus origin) {
         this.origin = origin;
@@ -27,7 +27,7 @@ public class NaiveSearch implements IsearchStrategy {
 
     private List<WordResult> matchResults(String query, Block block) {
         List<WordResult> wordResults = new LinkedList<>();
-        String blockString = block.toString();
+        String blockString = block.specialToString();
         int i;
         int j;
         for (i = 0; i <= blockString.length() - query.length(); i++) {

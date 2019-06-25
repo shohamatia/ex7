@@ -6,22 +6,19 @@ import processing.textStructure.Entry;
 import processing.textStructure.WordResult;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class NaiveSearchRK extends NaiveSearch {
-    private static Corpus origin;
+
     public NaiveSearchRK(Corpus origin) {
         super(origin);
-        NaiveSearchRK.origin = origin;
-
     }
 
     public List<WordResult> search(String query) {
         List<WordResult> results = new LinkedList<>();
-        for (Entry entry : NaiveSearchRK.origin){
+        for (Entry entry : this.origin){
             for (Block block : entry){
                 searchBlock(block, results, query);
             }
@@ -32,7 +29,7 @@ public class NaiveSearchRK extends NaiveSearch {
     private void searchBlock(Block blk, List<WordResult> results, String query) {
 
         char[] pattern = query.toCharArray();
-        char[] text = blk.toString().toCharArray();
+        char[] text = blk.specialToString().toCharArray();
 
         int patternSize = pattern.length;
         int textSize = text.length;

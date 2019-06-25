@@ -85,7 +85,7 @@ public class Stemmer {
     }
 
     /**
-     * After a word has been stemmed, it can be retrieved by toString(),
+     * After a word has been stemmed, it can be retrieved by specialToString(),
      * or a reference to the internal buffer can be retrieved by getResultBuffer
      * and getResultLength (which is generally more efficient.)
      */
@@ -485,7 +485,7 @@ public class Stemmer {
      * Stem the word placed into the utils.Stemmer buffer through calls to add().
      * Returns true if the stemming process resulted in a word different
      * from the input.  You can retrieve the result with
-     * getResultLength()/getResultBuffer() or toString().
+     * getResultLength()/getResultBuffer() or specialToString().
      */
     void stem() {
         k = i - 1;

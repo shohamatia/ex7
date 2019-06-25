@@ -80,13 +80,10 @@ public class WordResult {
         raf.seek(fullStartLoc);
         while (raf.getFilePointer() < endLoc)
             representation.append(raf.readLine());
-        for (int i = 0; i < metaData.size(); i++) {
-            if (i != metaData.size() - 1) {
-                representation.append(metaData.get(i)).append("\n");
-            } else {
-                representation.append(metaData.get(i));
-            }
-            //TODO probably need a return at the ed of last line as well
+        for (String datum : metaData) {
+            if (datum.isEmpty())
+                continue;
+            representation.append("\n").append(datum);
         }
         return representation.toString();
     }

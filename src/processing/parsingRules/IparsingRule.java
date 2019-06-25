@@ -23,7 +23,7 @@ public interface IparsingRule {
 	 * @param endPos    The end position of the block within the file
 	 * @return          A Block Object.
 	 */
-	Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos);
+	Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) throws IOException;
 
 	/**
 	 * A parser for the entire file.
