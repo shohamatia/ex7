@@ -31,7 +31,7 @@ public class NaiveSearchRK extends NaiveSearch {
     private void searchBlock(Block blk, List<WordResult> results, String query) {
 
         char[] pattern = query.toCharArray();
-        char[] text = blk.specialToString().toCharArray();
+        char[] text = blk.toString().toCharArray();
 
         int patternSize = pattern.length;
         int textSize = text.length;

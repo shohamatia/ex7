@@ -39,7 +39,7 @@ public class NaiveSearch implements IsearchStrategy {
      */
     private List<WordResult> matchResults(String query, Block block) {
         List<WordResult> wordResults = new LinkedList<>();
-        String blockString = block.specialToString();
+        String blockString = block.toString();
         int i;
         int j;
         for (i = 0; i <= blockString.length() - query.length(); i++) {

@@ -54,7 +54,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 				LinkedList<String> metadata = new LinkedList<>();
 				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
 						"*$", "") + "\"");
-				metadata.add(getSpeakers(block.specialToString()));
+				metadata.add(getSpeakers(block.toString()));
 				block.setMetadata(metadata);
 				blocks.add(block);
 			}
