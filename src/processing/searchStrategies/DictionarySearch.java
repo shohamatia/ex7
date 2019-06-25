@@ -71,6 +71,10 @@ public class DictionarySearch implements IsearchStrategy {
         return multiWordResults;
     }
 
+    /**
+     * @param singleWordQuery - single word to find
+     * @return list of words matching
+     */
     private List<Word> singleWordSearch(String singleWordQuery) {
         singleWordQuery = singleWordQuery.toLowerCase();
         int hash = stemmer.stem(singleWordQuery).hashCode();
@@ -79,6 +83,10 @@ public class DictionarySearch implements IsearchStrategy {
         return dict.get(hash);
     }
 
+    /**
+     * @param map - the map to do the calculation on
+     * @return - the cartesian product of the map.
+     */
     private List<HashMap<String, Word>> cartesianProduct(HashMap<String, List<Word>> map) {
         if (map.keySet().size() == 0)
             return new LinkedList<HashMap<String, Word>>() {{

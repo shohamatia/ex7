@@ -70,13 +70,11 @@ public class Block implements Serializable {
      *
      * @return string representation of the block (the entire text of the block from start to end indices)
      */
-    public String specialToString() {
+    @Override
+    public String toString() {
         try {
             List<Byte> bytes = new LinkedList<>();
             this.inputFile.seek(this.startIdx);
-//			System.out.println(this.endIdx);
-//			System.out.println(this.inputFile.getFilePointer());
-//			System.out.println(this.inputFile.getFilePointer()-this.endIdx);
             while (this.inputFile.getFilePointer() < this.endIdx) {
                 bytes.add(this.inputFile.readByte());
             }
@@ -84,14 +82,10 @@ public class Block implements Serializable {
             for (int i = 0; i < bytes.size(); i++) {
                 byteArray[i] = bytes.get(i);
             }
-//			System.out.println("BYTE ARRAY!!!!");
-//			System.out.println(byteArray);
-//			String s = new String(byteArray);
             return new String(byteArray);
         } catch (IOException e) {
             System.out.println("ERROR while reading block file to string");
             return " ";
-            ///TODO
         }
     }
 

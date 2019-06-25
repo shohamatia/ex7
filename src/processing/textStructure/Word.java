@@ -3,8 +3,6 @@ package processing.textStructure;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Wrapper class for a single word containing relevant attributes for distance calculation and string extraction from
@@ -92,6 +90,7 @@ public class Word implements Serializable {
         return this.srcBlk.getStartIndex() + this.srcBlkOffset;
     }
 
+    @Override
     public String toString() {
         return extractWord();
     }

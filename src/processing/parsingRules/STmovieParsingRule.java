@@ -20,6 +20,10 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
     }
 
 
+    /**
+     * @param file - the entry file
+     * @return list of all the blocks in the entry.
+     */
 	private LinkedList<Block> getScene(RandomAccessFile file){
 		LinkedList<Block> blocks = new LinkedList<>();
 		String sceneNumber;
@@ -65,6 +69,12 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 	}
 
 
+    /**
+     * finds the next block.
+     * @param file - the entry file
+     * @param metadata - deferments if to read the beginning of the file or not.
+     * @return string of the block
+     */
     private String getSceneBlock(RandomAccessFile file, boolean metadata) {
         final Pattern sceneLine = Pattern.compile(parsingRuleRegex.SCENE_TITLE);
         final Matcher thisLine = sceneLine.matcher("");
@@ -98,6 +108,10 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
         return String.valueOf(fileString);
     }
 
+    /**
+     * @param file - the entry file
+     * @return list of people that are given credit for this entry.
+     */
     private String[] getCredits(RandomAccessFile file) {
         String fileString = getSceneBlock(file, true);
         LinkedList<String> by = new LinkedList<>();
@@ -116,6 +130,10 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
         return by.toArray(new String[0]);
     }
 
+    /**
+     * @param file - the entry file
+     * @return string of all the characters in the scene.
+     */
 	private String getSpeakers(String file){
 		LinkedList<String> getSpeaker = new LinkedList<>();
 		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SPEAKER);
@@ -139,10 +157,12 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 		return "With the characters: " + speakersString;
 	}
 
+	@Override
     public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
         return null;
     }
 
+    @Override
     public List<Block> parseFile(RandomAccessFile inputFile) {
         StringBuilder entryCredits = new StringBuilder();
         String[] creditsList = getCredits(inputFile);
@@ -166,6 +186,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
         return blocks;
     }
 
+    @Override
     public void printResult(WordResult wordResult) {
 
     }
