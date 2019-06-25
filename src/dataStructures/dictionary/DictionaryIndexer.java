@@ -8,6 +8,7 @@ import processing.textStructure.Corpus;
 import processing.textStructure.Entry;
 import processing.textStructure.Word;
 import utils.Stemmer;
+import utils.Stopwords;
 import utils.WrongMD5ChecksumException;
 
 import java.io.*;
@@ -95,6 +96,8 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                 m.reset(blockString);
                 while (m.find()) {
                     String word = m.group();
+                    if(Stopwords.isStemmedStopword(word))
+                            continue;
                     word = STEMMER.stem(word.toLowerCase());
                     if(word.isEmpty())
                         continue;
@@ -106,7 +109,6 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             }
         }
     }
-//-1137201385
 
     @Override
     public IparsingRule getParseRule() {

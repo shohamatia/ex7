@@ -20,8 +20,8 @@ public class DictionarySearch implements IsearchStrategy {
 
     @Override
     public List<? extends WordResult> search(String query) {
-//        String stemmedQuery = Stopwords.removeStemmedStopWords(query);
-        String[] queryWords = query.split(" ");
+        String stoppedQuery = Stopwords.removeStemmedStopWords(query);
+        String[] queryWords = stoppedQuery.split(" ");
 
 
         HashMap<String, List<Word>> queryWordLists = new HashMap<>();
