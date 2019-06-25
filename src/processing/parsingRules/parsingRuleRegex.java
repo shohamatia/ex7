@@ -9,7 +9,7 @@ public class parsingRuleRegex {
     static final String SPEAKER = "?:^\\s+)(?<name>[A-Z]+)(?:$|(?:'S)?\\sVOICE)";
     static final String MOVIE_SPEAKER = "^\\s{43}((?:\\S+\\s))+";
     static final String MOVIE_SCENE_EXTRACTOR = "(?m)(?<sceneNumber>\\d+)\\s+(?<sceneName>.*?)" +
-            "\\s+\\k<sceneNumber>\\R(\\s{19}.*)+\\R";
+            "\\s+(\\k<sceneNumber>)\\R(\\s{19}.*)+\\R";
     static final String MOVIE_SCENE_HEADER = "\\s+(?<sceneNumber>\\d+)\\s+(?<sceneName>.*)" +
             "\\s+\\k<sceneNumber>\\s+(.*)";
     static final String TV_HEADER = "(?m)\\A\\s+STAR TREK: THE NEXT GENERATION\\s+\"" +

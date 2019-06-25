@@ -24,7 +24,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 		LinkedList<Block> blocks = new LinkedList<>();
 		String sceneNumber;
 		String sceneName;
-		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SCENE_HEADER);
+		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SCENE_EXTRACTOR);
 		final Matcher m = p.matcher(" ") ;
 		getSceneBlock(file, true);
 		String curBlock;
@@ -38,7 +38,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 				sceneNumber = m.group("sceneNumber");
 				Block block = null;
 				try {
-					block = new Block(file, curPointer + m.start(3) - 1, file.getFilePointer());
+					block = new Block(file, curPointer + m.end(3) - 1, file.getFilePointer());
 					if (file.getFilePointer() >= file.length()){
 						throw new IllegalArgumentException();
 					}
