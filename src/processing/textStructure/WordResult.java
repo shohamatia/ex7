@@ -66,12 +66,19 @@ public class WordResult {
      * @throws IOException
      */
     public String resultToString() throws IOException {
+        long end = this.idxInBlk +
+                this.location.getStartIndex() +
+                String.join(" ", this.content).length();
+        return resultToString(end);
+    }
+
+    protected String resultToString(long endLoc) throws IOException {
         List<String> metaData = this.location.getMetadata();
         StringBuilder representation = new StringBuilder(RESULTS_SEPARATOR);
         long fullStartLoc = this.idxInBlk + this.location.getStartIndex();
         RandomAccessFile raf = this.location.getRAF();
         raf.seek(fullStartLoc);
-        while (raf.getFilePointer() < fullStartLoc + this.content.length)
+        while (raf.getFilePointer() < endLoc)
             representation.append(raf.readLine());
         for (int i = 0; i < metaData.size(); i++) {
             if (i != metaData.size() - 1) {
