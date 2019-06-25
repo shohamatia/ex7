@@ -31,6 +31,7 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 		final Matcher m = p.matcher(" ") ;
 		getSceneBlock(file, true);
 		String curBlock;
+		String credits = getCredits(file);
 		String nextBlock = getSceneBlock(file, false);
 		long curPointer = 0;
 		while (!Objects.requireNonNull(nextBlock).isEmpty()){
@@ -56,13 +57,16 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
 						"*$", "") + "\"");
 				assert block != null;
+				System.out.println(sceneNumber);
 				metadata.add(getSpeakers(block.specialToString()));
-				metadata.add(getCredits(file));
+				metadata.add(credits);
 				block.setMetadata(metadata);
 				blocks.add(block);
+
 			}
 			try {
 				curPointer = file.getFilePointer();
+				file.seek(blocks.peekLast().getEndIndex());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -77,27 +81,26 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 		final Pattern sceneLine = Pattern.compile(parsingRuleRegex.TV_SCENE);
 		final Matcher thisLine = sceneLine.matcher("");
 		StringBuilder fileString = new StringBuilder();
-		int cunt = 0;
+		Boolean readSceneOpening = false;
 		try {
 			if (metadata){
 				file.seek(0);
-				cunt = 1;
+				readSceneOpening = true;
 			}
 			if (file.getFilePointer() == file.length() - 1){
 				return null;
 			}
 			String nextLine = "";
-			String curLine;
-			while (cunt != 2 && file.getFilePointer() < file.length()){
-				curLine = nextLine;
-				fileString.append(curLine + "\n");
+			while (file.getFilePointer() < file.length()){
+				fileString.append(nextLine);
 				long curPointer = file.getFilePointer();
-				nextLine = file.readLine();
+				nextLine = file.readLine() + "\n";
 				if (thisLine.reset(nextLine).find()){
-					if (cunt == 1) {
+					if (readSceneOpening) {
 						file.seek(curPointer);
+						return String.valueOf(fileString);
 					}
-					cunt += 1;
+					readSceneOpening = true;
 				}
 			}
 		} catch (IOException e) {
