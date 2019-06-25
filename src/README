@@ -7,6 +7,27 @@ yreisler
 =      File description     =
 =============================
 
+IparsingRule.java
+parsingRuleRegex.java
+SimpleParsingRule.java
+STmovieParsingRule.java
+STtvSeriesParsingRule.java
+DictionarySearch.java
+IsearchStrategy.java
+NaiveSearch.java
+NaiveSearchRK.java
+Block.java
+Corpus.java
+Entry.java
+MultiWordResult.java
+Word.java
+WordResult.java
+MD5.java
+Stemmer.java
+Stopwords.java
+WrongMD5ChecksumException.java
+Configuration.java
+TextSearcher.java
 
 
 ===========================================

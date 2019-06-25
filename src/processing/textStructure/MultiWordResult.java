@@ -34,10 +34,16 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
             throw new IllegalArgumentException("This result is too big");
     }
 
+    /**
+     * sets the min pos relative to the block
+     */
     private void calculateMin() {
         this.min = Arrays.stream(wordPositions).min().orElse(0);
     }
 
+    /**
+     * sets the max pos relative to the block
+     */
     private void calculateMax() {
         max = 0;
         int maxArrayPosition = 0;

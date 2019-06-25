@@ -8,7 +8,6 @@ import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * This class represents a single file within a Corpus
@@ -21,11 +20,18 @@ public class Entry implements Iterable<Block>, Serializable {
 	private IparsingRule parseRule;
 	private String name;
 
+    /**
+     * @return the entry path.
+     */
 	String getPath(){
 	    return this.path;
     }
 
-
+    /**
+     * constructor
+     * @param filePath - RAF of the entry file
+     * @param parseRule - the type of searching tactic
+     */
 	public Entry(String filePath, IparsingRule parseRule) {
 	    this.path = filePath;
 		this.file = new File(this.path);
@@ -33,6 +39,9 @@ public class Entry implements Iterable<Block>, Serializable {
 		this.name = this.file.getName();
 	}
 
+    /**
+     * populates entry with blocks.
+     */
 	void populate(){
 		try {
 			RandomAccessFile inputFile = new RandomAccessFile(file, "rw");
@@ -42,7 +51,6 @@ public class Entry implements Iterable<Block>, Serializable {
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
-			///todo
 		}
 	}
 

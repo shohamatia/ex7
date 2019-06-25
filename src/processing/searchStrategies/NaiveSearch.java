@@ -8,6 +8,9 @@ import processing.textStructure.WordResult;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * constructor
+ */
 public class NaiveSearch implements IsearchStrategy {
     protected Corpus origin;
 
@@ -15,6 +18,10 @@ public class NaiveSearch implements IsearchStrategy {
         this.origin = origin;
     }
 
+    /**
+     * @param query The query string to search for.
+     * @return list of wordResults objects matching the query.
+     */
     public List<WordResult> search(String query) {
         List<WordResult> wordResults = new LinkedList<>();
         for (Entry entry : origin) {
@@ -25,6 +32,11 @@ public class NaiveSearch implements IsearchStrategy {
         return wordResults;
     }
 
+    /**
+     * @param query The query string to search for.
+     * @param block the block to search in
+     * @return list of wordResults objects matching the query.
+     */
     private List<WordResult> matchResults(String query, Block block) {
         List<WordResult> wordResults = new LinkedList<>();
         String blockString = block.specialToString();
