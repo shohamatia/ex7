@@ -42,15 +42,11 @@ public class Entry implements Iterable<Block>, Serializable {
     /**
      * populates entry with blocks.
      */
-	void populate(){
-		try {
-			RandomAccessFile inputFile = new RandomAccessFile(file, "rw");
-			blocksList = new ArrayList<>(parseRule.parseFile(inputFile));
-			for (Block block: blocksList){
-				block.setEntryName(this.name);
-			}
-		} catch (FileNotFoundException e) {
-			System.out.println(e.getMessage());
+	void populate() throws FileNotFoundException{
+		RandomAccessFile inputFile = new RandomAccessFile(file, "rw");
+		blocksList = new ArrayList<>(parseRule.parseFile(inputFile));
+		for (Block block: blocksList){
+			block.setEntryName(this.name);
 		}
 	}
 

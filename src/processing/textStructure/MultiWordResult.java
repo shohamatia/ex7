@@ -2,7 +2,6 @@ package processing.textStructure;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.OptionalLong;
 
 /**
  * This class defines a query result for multiple non-consecutive words.
@@ -11,10 +10,6 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
     private long[] wordPositions;
     private int confidence;
     private long min, max;
-
-    private MultiWordResult(Block blk, String[] query, long idx) {
-        super(blk, query, idx);
-    }
 
     /**
      * Constructor
@@ -58,10 +53,8 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
     }
 
     /**
-     * Calculate the confidence level of a result, defined by the the negative sum of word distances, such
-     * that the highest confidence level is the closest to the original query, and the closest to zero.
-     *
-     * @return The sum of distances
+     * Calculate the confidence level of a result, defined by the distance of the min and the max character
+     * position in the result.
      */
     private void calcConfidence() {
         confidence = (int) (this.min - this.max);
@@ -79,7 +72,7 @@ public class MultiWordResult extends WordResult implements Comparable<MultiWordR
     }
 
     /**
-     * Extract a string that contains all words in the multy-word-result
+     * Extract a string that contains all words in the multi-word-result
      * This should be a sentence starting at the word with the minimal location (index) and ending
      * at the first line-break after the last word
      *

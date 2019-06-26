@@ -5,6 +5,7 @@ import dataStructures.naive.NaiveIndexerRK;
 import processing.textStructure.Corpus;
 import processing.textStructure.WordResult;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,7 +19,6 @@ public class TextSearcher {
     private final static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single argument.";
     private final static String INVALID_INPUT_ARGUMENTS_FILE_ERROR = "The input was an invalid file.";
     private final static String QUERY_RESULTS = "The top 10 results for query '%s' are:";
-
 
 
     /**
@@ -37,11 +37,20 @@ public class TextSearcher {
             origin = new Corpus(conf.getCorpusPathAddress(), conf.getParseRuleString());
         } catch (IOException e) {
             System.out.println(INVALID_INPUT_ARGUMENTS_FILE_ERROR);
+            System.out.println(e.getMessage());
+            return;
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
             return;
         }
 
-        Aindexer indexer = getIndexer(conf.getIndexType(),origin);
-        indexer.index();
+        Aindexer<?> indexer = getIndexer(conf.getIndexType(), origin);
+        try {
+            indexer.index();
+        }catch (FileNotFoundException e){
+            System.out.println("File not found when indexing.");
+        }
+
 
         if (!conf.hasQuery()) {
             return;
@@ -50,17 +59,16 @@ public class TextSearcher {
         String query = conf.getQuery();
         List<? extends WordResult> results = indexer.asSearchInterface().search(query);
         System.out.println(String.format(QUERY_RESULTS, query));
-        if(results==null||results.size()==0) {
+        if (results == null || results.size() == 0) {
             System.out.println("empty or null results");
             return;
         }
-        for (int i = 0; i< Math.min(results.size(),10);i++){
+        for (int i = 0; i < Math.min(results.size(), 10); i++) {
             WordResult result = results.get(i);
             try {
                 System.out.println(result.resultToString());
-            }
-            catch (IOException e){
-                System.out.println("IO problem");
+            } catch (IOException e) {
+                System.out.println("IO problem while reading search results");
             }
 
         }
@@ -68,8 +76,7 @@ public class TextSearcher {
 
     private static List<String> checkLegitFile(String[] args) throws IOException {
         if (args.length != 1) {
-            System.out.println(WRONG_NUM_OF_ARGS_ERROR);
-            throw new IOException();
+            throw new IOException(WRONG_NUM_OF_ARGS_ERROR);
         }
         String path_name = args[0];
         Path path = Paths.get(path_name);
@@ -77,12 +84,10 @@ public class TextSearcher {
     }
 
 
-    static Aindexer getIndexer(Aindexer.IndexTypes indexType, Corpus origin) {
+    static Aindexer<?> getIndexer(Aindexer.IndexTypes indexType, Corpus origin) {
         switch (indexType) {
             case DICT:
                 return new DictionaryIndexer(origin);
-//            case NAIVE:
-//                return new NaiveIndexer(origin);
             case NAIVE_RK:
                 return new NaiveIndexerRK(origin);
             default:

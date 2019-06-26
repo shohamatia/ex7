@@ -40,7 +40,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 			if (m.find()){
 				sceneName = m.group("sceneName");
 				sceneNumber = m.group("sceneNumber");
-				Block block = null;
+				Block block;
 				try {
 					block = new Block(file, curPointer + m.end(3) - 1, file.getFilePointer());
 					if (file.getFilePointer() >= file.length()){
@@ -48,6 +48,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					continue;
 				}catch (IllegalArgumentException e){
 					break;
 				}
@@ -92,7 +93,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
             String curLine;
             while (cunt != 2 && file.getFilePointer() < file.length()) {
                 curLine = nextLine;
-                fileString.append(curLine + "\n");
+                fileString.append(curLine).append("\n");
                 long curPointer = file.getFilePointer();
                 nextLine = file.readLine();
                 if (thisLine.reset(nextLine).find()) {
@@ -177,9 +178,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
         }
         LinkedList<Block> blocks = getScene(inputFile);
         for (Block block : blocks) {
-            LinkedList<String> metadata = new LinkedList<>();
-            List<String> curMetadata = block.getMetadata();
-            metadata.addAll(curMetadata);
+            LinkedList<String> metadata = new LinkedList<>(block.getMetadata());
             metadata.add(credits);
             block.setMetadata(metadata);
         }

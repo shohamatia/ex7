@@ -61,7 +61,7 @@ public class WordResult {
      *
      * @return The result representation as defined by the "printing results" requirement in the exercise
      * instructions.
-     * @throws IOException
+     * @throws IOException if trouble reading result from file
      */
     public String resultToString() throws IOException {
         long end = this.idxInBlk +

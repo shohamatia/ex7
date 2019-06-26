@@ -29,7 +29,7 @@ public class Block implements Serializable {
         this.startIdx = startIdx;
         this.endIdx = endIdx;
         if (startIdx < 0 || startIdx >= endIdx || endIdx >= inputFile.length())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Tried to create block with illegal indices.");
     }
 
     /**
@@ -37,9 +37,9 @@ public class Block implements Serializable {
      *
      * @return filename
      */
-    public String getEntryName() throws Exception {
+    public String getEntryName() throws NoSuchFieldException {
         if (entryName == null)
-            throw new Exception("called getEntryName on a block without setting it");
+            throw new NoSuchFieldException("called getEntryName on a block without setting it");
         return entryName;
     }
 
@@ -84,7 +84,7 @@ public class Block implements Serializable {
             }
             return new String(byteArray);
         } catch (IOException e) {
-            System.out.println("ERROR while reading block file to string");
+            System.out.println("ERROR: couldn't read block file to string");
             return " ";
         }
     }
@@ -105,12 +105,8 @@ public class Block implements Serializable {
         return inputFile;
     }
 
-    void setRAF(String path) {
-        try {
-            this.inputFile = new RandomAccessFile(path, "rw");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+    void setRAF(String path) throws FileNotFoundException{
+        this.inputFile = new RandomAccessFile(path, "rw");
     }
 
     /**

@@ -35,7 +35,7 @@ public class Word implements Serializable {
      * @param startIdx The offset within the block where the word starts.
      * @param endIdx   The offset within the block where the word ends.
      */
-    public Word(Block source, long startIdx, long endIdx) {
+    public Word(Block source, long startIdx, long endIdx) throws IOException{
         this.srcBlk = source;
         this.srcBlkOffset = startIdx;
         this.length = (int) (endIdx - startIdx);
@@ -56,19 +56,15 @@ public class Word implements Serializable {
      *
      * @return The word in String format.
      */
-    protected String extractWord() {
+    protected String extractWord() throws IOException{
         RandomAccessFile raf = this.srcBlk.getRAF();
-        String word = " ";
+        String word;
         byte[] wordBytesArray = new byte[this.length];
-        try {
-            raf.seek(getEntryIndex());
-            for (int i = 0; i < this.length; i++) {
-                wordBytesArray[i] = raf.readByte();
-            }
-            word = new String(wordBytesArray);
-        } catch (IOException e) {
-            e.printStackTrace();
+        raf.seek(getEntryIndex());
+        for (int i = 0; i < this.length; i++) {
+            wordBytesArray[i] = raf.readByte();
         }
+        word = new String(wordBytesArray);
         return word;
     }
 
@@ -92,6 +88,12 @@ public class Word implements Serializable {
 
     @Override
     public String toString() {
-        return extractWord();
+        try {
+            return extractWord();
+        }
+        catch (IOException e){
+            System.out.println("Failed to read string");
+            return "";
+        }
     }
 }

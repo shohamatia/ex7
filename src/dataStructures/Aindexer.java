@@ -39,7 +39,7 @@ public abstract class Aindexer<T extends IsearchStrategy> {
      * Main indexing method. Common implementation trying to read indexed cache file
      * This method can be edited, but is enough assuming the other methods are implemented well.
      */
-    public void index() {
+    public void index() throws FileNotFoundException{
         try {
             readIndexedFile();
             this.origin.updateRAFs();

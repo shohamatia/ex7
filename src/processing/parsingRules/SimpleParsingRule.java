@@ -34,8 +34,8 @@ public class SimpleParsingRule implements IparsingRule, Serializable {
 		int rawChunkSize = MAXLINELENGTH * 15;
 		byte[] rawBytes = new byte[rawChunkSize];
 		try {
-			long endOfBlockOffset = 0, curBlockEnd;
-			Long lastIndex = inputFile.length();
+			long endOfBlockOffset = 0;
+			long lastIndex = inputFile.length();
 			for (long i = endOfBlockOffset; i < lastIndex - rawChunkSize; i += rawChunkSize) {
 				inputFile.seek(i);
 				inputFile.read(rawBytes);

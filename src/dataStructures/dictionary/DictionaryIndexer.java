@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,8 +67,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             this.origin = (Corpus) originObj;
 
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-            throw new FileNotFoundException();
+            throw new FileNotFoundException( "Couldn't read file:\n"+e.getMessage());
         }
     }
 
@@ -82,7 +80,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             out.writeObject(new HashMapWrapper(dict));
             out.writeObject(origin);
         } catch (IOException e) {
-            System.err.println("writeIndexFile error:" + e.getMessage());
+            System.out.println("writeIndexFile error:" + e.getMessage());
         }
     }
 
@@ -103,8 +101,12 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                         continue;
                     int key = word.hashCode();
                     dict.putIfAbsent(key, new LinkedList<>());
-                    Word newWord = new Word(block, m.start(), m.end());
-                    dict.get(key).add(newWord);
+                    try {
+                        Word newWord = new Word(block, m.start(), m.end());
+                        dict.get(key).add(newWord);
+                    }catch (IOException e){
+                        System.out.println("Failed to read word to dict");
+                    }
                 }
             }
         }
