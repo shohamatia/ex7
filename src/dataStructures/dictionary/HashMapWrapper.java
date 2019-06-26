@@ -6,9 +6,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Wrapper class for hashMap<Integer, List<Word>>.
+ */
 class HashMapWrapper implements Serializable {
 
-    HashMap<Integer, List<Word>> map;
+    private HashMap<Integer, List<Word>> map;
 
     HashMapWrapper(HashMap<Integer, List<Word>> map) {
         this.map = map;

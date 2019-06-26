@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This class represents a result containing a single string (single word or multiple words treated as one)
+ * This class represents a result containing a single string (single word or multiple words treated as one).
  */
 public class WordResult {
     private final static String RESULTS_SEPARATOR =

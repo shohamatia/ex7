@@ -1,5 +1,6 @@
 package processing.parsingRules;
 
+//Importing files:
 import processing.textStructure.Block;
 import processing.textStructure.WordResult;
 
@@ -12,8 +13,11 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Class that defines the parsing of a movie script.
+ */
 public class STmovieParsingRule implements IparsingRule, Serializable {
+    //Constants:
     private static final String IN_SCENE = "Appearing in scene %s, titled \"%s\"";
 
     public static final long serialVersionUID = 1L;
@@ -41,7 +45,6 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
             if (!m.find()) {
                 continue;
             }
-
             Block block;
             try {
                 block = new Block(file, pointer + m.end(3) - 1, file.getFilePointer());
@@ -54,7 +57,7 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
             }
             LinkedList<String> metadata = new LinkedList<>();
 
-            //add metadata
+            //Add metadata:
             sceneName = m.group("sceneName");
             sceneName = sceneName.replaceAll(" *$", "");
             sceneNumber = m.group("sceneNumber");
@@ -80,27 +83,26 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
         final Pattern sceneLine = Pattern.compile(parsingRuleRegex.SCENE_TITLE);
         final Matcher thisLine = sceneLine.matcher("");
         StringBuilder fileString = new StringBuilder();
-        boolean readASceneOpenning = false;
+        boolean readASceneOpening = false;
         try {
             if (metadata) {
                 file.seek(0);
-                readASceneOpenning = true;
+                readASceneOpening = true;
             }
             if (file.getFilePointer() == file.length() - 1) {
                 return null;
             }
             String nextLine = "";
-
             while (file.getFilePointer() < file.length()) {
                 fileString.append(nextLine).append("\n");
                 long curPointer = file.getFilePointer();
                 nextLine = file.readLine();
                 if (thisLine.reset(nextLine).find()) {
-                    if (readASceneOpenning) {
+                    if (readASceneOpening) {
                         file.seek(curPointer);
                         break;
                     }
-                    readASceneOpenning = true;
+                    readASceneOpening = true;
                 }
             }
         } catch (IOException e) {

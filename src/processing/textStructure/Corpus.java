@@ -10,8 +10,8 @@ import java.io.*;
 import java.util.*;
 
 /**
- * This class represents a body of works - anywhere between one and thousands of documents
- * sharing the same structure and that can be parsed by the same parsing rule.
+ * This class represents a body of works - anywhere between one and thousands of documents sharing the same
+ * structure and that can be parsed by the same parsing rule.
  */
 public class Corpus implements Iterable<Entry>, Serializable {
     public static final long serialVersionUID = 1L;

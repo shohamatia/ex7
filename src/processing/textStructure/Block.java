@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This class represents an arbitrary block of text within a file
+ * This class represents an arbitrary block of text within a file.
  */
 public class Block implements Serializable {
     public static final long serialVersionUID = 1L;

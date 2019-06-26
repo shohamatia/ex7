@@ -9,11 +9,17 @@ import utils.Stopwords;
 
 import java.util.*;
 
+/**
+ * Implements searching in an dictionary indexer.
+ */
 public class DictionarySearch implements IsearchStrategy {
     private HashMap<Integer, List<Word>> dict;
     private static Stemmer stemmer = new Stemmer();
 
-
+    /**
+     * Constructor
+     * @param dict - the indexed data.
+     */
     public DictionarySearch(HashMap<Integer, List<Word>> dict) {
         this.dict = dict;
     }
@@ -22,12 +28,9 @@ public class DictionarySearch implements IsearchStrategy {
     public List<? extends WordResult> search(String query) {
         String stoppedQuery = Stopwords.removeStemmedStopWords(query);
         String[] queryWords = stoppedQuery.split(" ");
-
-
         HashMap<String, List<Word>> queryWordLists = new HashMap<>();
         for (String singleQuery : queryWords)
             queryWordLists.put(singleQuery, singleWordSearch(singleQuery));
-
         HashMap<Block, HashMap<String, List<Word>>> queryWordListsByBlock = new HashMap<>();
         for (String key : queryWordLists.keySet())
             for (Word word : queryWordLists.get(key)) {
@@ -37,19 +40,15 @@ public class DictionarySearch implements IsearchStrategy {
                 List<Word> list = map.computeIfAbsent(key, k -> new LinkedList<>());
                 list.add(word);
             }
-
         Set<Block> blocksWithOutFullQuery = new HashSet<>();
         for (Block block : queryWordListsByBlock.keySet())
             if (!queryWordListsByBlock.get(block).keySet().equals(queryWordLists.keySet()))
                 blocksWithOutFullQuery.add(block);
 
         queryWordListsByBlock.keySet().removeAll(blocksWithOutFullQuery);
-
-
         List<MultiWordResult> multiWordResults = new LinkedList<>();
         for (Block block : queryWordListsByBlock.keySet()) {
             List<HashMap<String, Word>> fullResults = cartesianProduct(queryWordListsByBlock.get(block));
-
             for (HashMap<String, Word> result : fullResults) {
                 long[] locs = new long[queryWords.length];
                 for (int i = 0; i < queryWords.length; i++) {
@@ -64,7 +63,6 @@ public class DictionarySearch implements IsearchStrategy {
                 }
                 multiWordResults.add(multiWordResult);
             }
-
         }
         multiWordResults.sort(MultiWordResult::compareTo);
         return multiWordResults;

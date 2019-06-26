@@ -20,18 +20,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * An implementation of the abstract Aindexer class, backed by a simple hashmap to store words and their
+ * An implementation of the abstract Aindexer class, backed by a simple hashMap to store words and their
  * locations within the files.
  */
 public class DictionaryIndexer extends Aindexer<DictionarySearch> {
     private static final String regexForWord = "[a-zA-Z0-9]+";
     private static final Stemmer STEMMER = new Stemmer();
-    public static final IndexTypes TYPE_NAME = IndexTypes.DICT;
+    private static final IndexTypes TYPE_NAME = IndexTypes.DICT;
     private final String fileIndexerPath;
     private transient HashMap<Integer, List<Word>> dict;
 
     /**
-     * Basic constructor, sets origin Corpus and initializes backing hashmap
+     * Basic constructor, sets origin Corpus and initializes backing hashMap
      *
      * @param origin the Corpus to be indexed by this DS.
      */

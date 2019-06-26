@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Implements searching with Rabin-Karp Algorithm.
+ */
 public class NaiveSearchRK extends NaiveSearch {
 
     public NaiveSearchRK(Corpus origin) {

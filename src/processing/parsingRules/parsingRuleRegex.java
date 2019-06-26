@@ -1,7 +1,10 @@
 package processing.parsingRules;
 
+/**
+ * Class that defines the regex expressions for searching the files.
+ */
 public class parsingRuleRegex {
-    //constants representing regex for serening the files:
+    //constants representing regex for searching the files:
     static final String SCENE_TITLE = "(?m)(?<sceneNumber>\\d+[A-Z]*)\\s+(?<sceneName>.*?)\\s+" +
             "(\\k<sceneNumber>)";
     static final String CREDITS = "^(\\s*(?<whatIsBy>\\w+) by:\\s*?(?:\\r\\n?|\\n)\\s+(?<byWhom>" +

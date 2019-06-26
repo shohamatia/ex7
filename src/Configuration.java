@@ -1,3 +1,4 @@
+//importing files:
 import dataStructures.Aindexer;
 import processing.parsingRules.IparsingRule;
 
@@ -7,7 +8,21 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class that helps with running the main method.
+ */
 public class Configuration {
+    //Defining constants:
+    private final static String CORPUS = "CORPUS";
+    private final static String INDEXER = "INDEXER";
+    private final static String PARSE_RULE = "PARSE_RULE";
+    private final static String QUERY = "QUERY";
+    private final static String MISSING_REQUIRED_SECTION_ERROR = "Error: configuration file does not " +
+            "contain required %s section at line %d.";
+    private final static String WRONG_NUMBER_OF_INPUTS = "Error: must be six or eight lines in " +
+            "configuration file.";
+
+    //Defining valuables:
     private String corpusPathAddress;
     private String parseRuleString;
     private String queryTitle;
@@ -16,32 +31,35 @@ public class Configuration {
     private Boolean hasQuery;
     private Path path;
     private Aindexer.IndexTypes indexType;
-    private final static String CORPUS = "CORPUS";
-    private final static String INDEXER = "INDEXER";
     private static HashMap<String, Aindexer.IndexTypes> indexTypesHashMap =
             new HashMap<String, Aindexer.IndexTypes>() {{
                 for (Aindexer.IndexTypes AnIndexType : Aindexer.IndexTypes.values())
                     put(AnIndexType.toString(), AnIndexType);
             }};
-    private final static String PARSE_RULE = "PARSE_RULE";
     private static HashMap<String, IparsingRule.ParserTypes> parserTypesHashMap = new HashMap<String,
             IparsingRule.ParserTypes>() {{
         for (IparsingRule.ParserTypes AParserType : IparsingRule.ParserTypes.values())
             put(AParserType.toString(), AParserType);
     }};
-    private final static String QUERY = "QUERY";
-    private final static String MISSING_REQUIRED_SECTION_ERROR =
-            "Error: configuration file does not contain required %s section at line %d.";
 
+    /**
+     * Constructor
+     * @param lines - The lines of text in the input file.
+     * @throws IllegalArgumentException - throws exception if the input file doesn't match the requirements.
+     */
     Configuration(List<String> lines) throws IllegalArgumentException {
         this.lines = lines;
         checkLines();
     }
 
+    /**
+     * Checks the input file
+     * @throws IllegalArgumentException - throws exception if the input file doesn't match the requirements.
+     */
     private void checkLines() throws IllegalArgumentException {
         //number of lines
         if (lines.size() != 6 && lines.size() != 8) {
-            throw new IllegalArgumentException("Error: must be six or eight lines in configuration file.");
+            throw new IllegalArgumentException(WRONG_NUMBER_OF_INPUTS);
         }
 
         String corpusTitle = lines.get(0);
@@ -98,31 +116,49 @@ public class Configuration {
             throw new IllegalArgumentException(String.format(MISSING_REQUIRED_SECTION_ERROR, QUERY, 6));
         }
         // check line 7
-        // any string is permissable
+        // any string is permissible
     }
 
+    /**
+     * @return - The indexer type.
+     */
     Aindexer.IndexTypes getIndexType() {
         return indexType;
     }
 
+    /**
+     * @return - The query if there is one.
+     */
     String getQuery() {
         if (!hasQuery)
             return null;
         return query;
     }
 
+    /**
+     * @return - The path of the files as string.
+     */
     String getCorpusPathAddress() {
         return corpusPathAddress;
     }
 
+    /**
+     * @return - The parse rule as string.
+     */
     String getParseRuleString() {
         return parseRuleString;
     }
 
+    /**
+     * @return true if has query false otherwise.
+     */
     Boolean hasQuery() {
         return hasQuery;
     }
 
+    /**
+     * @return - The path of the files as path object.
+     */
     Path getPath() {
         return path;
     }

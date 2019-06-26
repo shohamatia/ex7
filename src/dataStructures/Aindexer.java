@@ -1,9 +1,5 @@
 package dataStructures;
 
-import dataStructures.dictionary.DictionaryIndexer;
-import dataStructures.naive.NaiveIndexer;
-import dataStructures.naive.NaiveIndexerRK;
-import dataStructures.suffixtree.GeneralizedSuffixTree;
 import processing.parsingRules.IparsingRule;
 import processing.searchStrategies.IsearchStrategy;
 import processing.textStructure.Corpus;
@@ -13,7 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * The abstract class describing the necessary methods and common implementations of all indexing data structures.
+ * The abstract class describing the necessary methods and common implementations of all indexing data
+ * structures.
  *
  * @param <T> The search strategy used by this indexing engine. Can be any class that implements the
  *            IsearchStrategy interface.

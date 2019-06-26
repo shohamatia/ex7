@@ -5,7 +5,6 @@ import dataStructures.naive.NaiveIndexerRK;
 import processing.textStructure.Corpus;
 import processing.textStructure.WordResult;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,10 +12,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * The test program - A text searching module that indexes and queries large corpuses for strings or word groups
+ * The test program - A text searching module that indexes and queries large corpses for strings or word
+ * groups.
  */
 public class TextSearcher {
-    private final static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single argument.";
+    private final static String WRONG_NUM_OF_ARGS_ERROR = "This function should only receive a single " +
+            "argument.";
     private final static String INVALID_INPUT_ARGUMENTS_FILE_ERROR = "The input was an invalid file.";
     private final static String QUERY_RESULTS = "The top 10 results for query '%s' are:";
 

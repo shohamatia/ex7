@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * This class represents a single file within a Corpus
+ * This class represents a single file within a Corpus.
  */
 public class Entry implements Iterable<Block>, Serializable {
     public static final long serialVersionUID = 1L;

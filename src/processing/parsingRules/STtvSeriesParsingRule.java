@@ -12,6 +12,9 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class that defines the parsing of the script of an episode of a TV show.
+ */
 public class STtvSeriesParsingRule implements IparsingRule, Serializable {
     public static final long serialVersionUID = 1L;
 
@@ -19,10 +22,16 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
     public STtvSeriesParsingRule() {
     }
 
+    @Override
     public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
         return null;
     }
 
+    /**
+     * @param file - the entry file
+     * @return list of all the blocks in the entry.
+     * @throws IOException
+     */
     private LinkedList<Block> getScenes(RandomAccessFile file) throws IOException {
         LinkedList<Block> blocks = new LinkedList<>();
         String sceneNumber;
@@ -65,6 +74,14 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
     }
 
 
+    /**
+     * finds the next block.
+     *
+     * @param file     - the entry file
+     * @param metadata - deferments if to read the beginning of the file or not.
+     * @return string of the block.
+     * @throws IOException
+     */
     private String getSceneBlock(RandomAccessFile file, boolean metadata) throws IOException {
         final Pattern sceneLine = Pattern.compile(parsingRuleRegex.TV_SCENE);
         final Matcher thisLine = sceneLine.matcher("");
@@ -93,6 +110,11 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
         return String.valueOf(fileString);
     }
 
+    /**
+     * @param file - the entry file
+     * @return Name of the episode entry.
+     * @throws IOException
+     */
     private String getHeader(RandomAccessFile file) throws IOException {
         String fileString = getSceneBlock(file, true);
         final Pattern getCreditsPattern = Pattern.compile(parsingRuleRegex.TV_HEADER);
@@ -105,6 +127,11 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
         return eTitle;
     }
 
+    /**
+     * @param file - the entry file
+     * @return list of people that are given credit for this entry.
+     * @throws IOException
+     */
     private String getCredits(RandomAccessFile file) throws IOException {
         String fileString = getSceneBlock(file, true);
         final Pattern getCreditsPattern = Pattern.compile(parsingRuleRegex.TV_CREDITS);
@@ -117,6 +144,10 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
         return "By: " + writers;
     }
 
+    /**
+     * @param file - the entry file
+     * @return string of all the characters in the scene.
+     */
     private String getSpeakers(String file) {
         LinkedList<String> getSpeaker = new LinkedList<>();
         final Pattern p = Pattern.compile(parsingRuleRegex.CHARACTERS);
@@ -140,6 +171,7 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
         return "With the characters: " + speakersString;
     }
 
+    @Override
     public List<Block> parseFile(RandomAccessFile inputFile) {
         try {
             return getScenes(inputFile);

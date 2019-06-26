@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Alessandro Bahgat Shehata
- * <p>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +36,7 @@ class EdgeBag implements Map<Character, Edge> {
         if (c != (char) (byte) c) {
             throw new IllegalArgumentException("Illegal input character " + c + "");
         }
-
+        
         if (chars == null) {
             chars = new byte[0];
             values = new Edge[0];
@@ -64,7 +64,7 @@ class EdgeBag implements Map<Character, Edge> {
         }
         return previous;
     }
-
+    
     @Override
     public Edge get(Object maybeCharacter) {
         return get(((Character) maybeCharacter).charValue());  // throws if cast fails.
@@ -74,7 +74,7 @@ class EdgeBag implements Map<Character, Edge> {
         if (c != (char) (byte) c) {
             throw new IllegalArgumentException("Illegal input character " + c + "");
         }
-
+        
         int idx = search(c);
         if (idx < 0) {
             return null;
@@ -85,7 +85,7 @@ class EdgeBag implements Map<Character, Edge> {
     private int search(char c) {
         if (chars == null)
             return -1;
-
+        
         if (chars.length > BSEARCH_THRESHOLD) {
             return Arrays.binarySearch(chars, (byte) c);
         }
@@ -110,18 +110,18 @@ class EdgeBag implements Map<Character, Edge> {
      */
     private void sortArrays() {
         for (int i = 0; i < chars.length; i++) {
-            for (int j = i; j > 0; j--) {
-                if (chars[j - 1] > chars[j]) {
-                    byte swap = chars[j];
-                    chars[j] = chars[j - 1];
-                    chars[j - 1] = swap;
+         for (int j = i; j > 0; j--) {
+            if (chars[j-1] > chars[j]) {
+               byte swap = chars[j];
+               chars[j] = chars[j-1];
+               chars[j-1] = swap;
 
-                    Edge swapEdge = values[j];
-                    values[j] = values[j - 1];
-                    values[j - 1] = swapEdge;
-                }
+               Edge swapEdge = values[j];
+               values[j] = values[j-1];
+               values[j-1] = swapEdge;
             }
-        }
+         }
+      }
     }
 
     @Override
@@ -138,32 +138,32 @@ class EdgeBag implements Map<Character, Edge> {
     public Set<Entry<Character, Edge>> entrySet() {
         throw new UnsupportedOperationException("Not implemented");
     }
-
+    
     @Override
     public Set<Character> keySet() {
         throw new UnsupportedOperationException("Not implemented");
     }
-
+    
     @Override
     public void clear() {
         throw new UnsupportedOperationException("Not implemented");
     }
-
+    
     @Override
     public void putAll(Map<? extends Character, ? extends Edge> m) {
         throw new UnsupportedOperationException("Not implemented");
     }
-
+    
     @Override
     public Edge remove(Object key) {
         throw new UnsupportedOperationException("Not implemented");
     }
-
+    
     @Override
     public boolean containsKey(Object key) {
         throw new UnsupportedOperationException("Not implemented");
     }
-
+    
     @Override
     public boolean containsValue(Object key) {
         throw new UnsupportedOperationException("Not implemented");

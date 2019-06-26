@@ -9,11 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * constructor
+ * Implements naive searching.
  */
 public class NaiveSearch implements IsearchStrategy {
     protected Corpus origin;
 
+    /**
+     * constructor
+     */
     public NaiveSearch(Corpus origin) {
         this.origin = origin;
     }

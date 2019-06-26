@@ -7,27 +7,51 @@ yreisler
 =      File description     =
 =============================
 
-IparsingRule.java
-parsingRuleRegex.java
-SimpleParsingRule.java
-STmovieParsingRule.java
-STtvSeriesParsingRule.java
-DictionarySearch.java
-IsearchStrategy.java
-NaiveSearch.java
-NaiveSearchRK.java
-Block.java
-Corpus.java
-Entry.java
-MultiWordResult.java
-Word.java
-WordResult.java
-MD5.java
-Stemmer.java
-Stopwords.java
-WrongMD5ChecksumException.java
-Configuration.java
-TextSearcher.java
+- Configuration.java - Class that helps with running the main method.
+- TextSearcher.java - The test program - A text searching module that indexes and queries large corpses for
+strings or word groups.
+- dataStructures:
+    - dictionary:
+        - DictionaryIndexer.java - An implementation of the abstract Aindexer class, backed by a simple
+        hashMap to store words and their locations within the files.
+        - HashMapWrapper.java - Wrapper class for hashMap<Integer, List<Word>>.
+    - naive:
+        - NaiveIndexer.java - A "naive" indexer. This approach forgoes actually pre-processing the file, and
+        simply loads the text and searches directly on it.
+        - NaiveIndexerRK.java - A "naive" indexer. This approach forgoes actually pre-processing the file, and
+        simply loads the text and searches directly on it using the Rabin-Karp Algorithm.
+    - Aindexer.java - The abstract class describing the necessary methods and common implementations of all
+    indexing data structures.
+- processing:
+    - parsingRules:
+        - IparsingRule.java - An interface describing the contract any parser should maintain, as well as
+        possible default methods.
+        - parsingRuleRegex.java - Class that defines the regex expressions for searching the files.
+        - SimpleParsingRule.java - Class that defines the simple parsing of a file.
+        - STmovieParsingRule.java - Class that defines the parsing of a movie script.
+        - STtvSeriesParsingRule.java - Class that defines the parsing of the script of an episode of a TV
+        show.
+    - searchStrategies:
+        - DictionarySearch.java - Implements searching in an dictionary indexer.
+        - IsearchStrategy.java - A functional interface describing the contract any search Strategy must
+        implement.
+        - NaiveSearch.java - Implements naive searching.
+        - NaiveSearchRK.java - Implements searching with Rabin-Karp Algorithm.
+    - textStructure:
+        - Block.java - This class represents an arbitrary block of text within a file.
+        - Corpus.java - This class represents a body of works - anywhere between one and thousands of
+        documents sharing the same structure and that can be parsed by the same parsing rule.
+        - Entry.java - This class represents a single file within a Corpus.
+        - MultiWordResult.java - This class defines a query result for multiple non-consecutive words.
+        - Word.java - Wrapper class for a single word containing relevant attributes for distance calculation
+        and string extraction from the containing block or file.
+        - WordResult.java - This class represents a result containing a single string (single word or multiple
+        words treated as one).
+- utils:
+    - MD5.java
+    - Stemmer.java
+    - Stopwords.java
+    - WrongMD5ChecksumException.java
 
 
 ===========================================
@@ -59,7 +83,7 @@ NaiveSearch(pat, txt):
 
 
 
-
 ============================
 =  Implementation issues   =
 ============================
+Configuration.java TextSearcher.java DictionaryIndexer.java NaiveIndexer.java NaiveIndexerRK.java Aindexer.java IparsingRule.java parsingRuleRegex.java SimpleParsingRule.java STmovieParsingRule.java STtvSeriesParsingRule.java DictionarySearch.java

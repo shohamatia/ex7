@@ -5,8 +5,8 @@ import java.io.RandomAccessFile;
 import java.io.Serializable;
 
 /**
- * Wrapper class for a single word containing relevant attributes for distance calculation and string extraction from
- * the containing block or file.
+ * Wrapper class for a single word containing relevant attributes for distance calculation and string
+ * extraction from the containing block or file.
  */
 public class Word implements Serializable {
     public static final long serialVersionUID = 1L;
