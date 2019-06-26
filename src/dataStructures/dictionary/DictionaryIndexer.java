@@ -67,12 +67,12 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             this.origin = (Corpus) originObj;
 
         } catch (IOException | ClassNotFoundException e) {
-            throw new FileNotFoundException( "Couldn't read file:\n"+e.getMessage());
+            throw new FileNotFoundException("Couldn't read file:\n" + e.getMessage());
         }
     }
 
     @Override
-    protected void writeIndexFile() {
+    protected void writeIndexFile() throws IOException {
         try (FileOutputStream file = new FileOutputStream(fileIndexerPath);
              ObjectOutputStream out = new ObjectOutputStream(file)) {
             String originChecksum = origin.getChecksum();
@@ -80,7 +80,7 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
             out.writeObject(new HashMapWrapper(dict));
             out.writeObject(origin);
         } catch (IOException e) {
-            System.out.println("writeIndexFile error:" + e.getMessage());
+            throw new IOException("writeIndexFile error:" + e.getMessage());
         }
     }
 
@@ -94,17 +94,17 @@ public class DictionaryIndexer extends Aindexer<DictionarySearch> {
                 m.reset(blockString);
                 while (m.find()) {
                     String word = m.group();
-                    if(Stopwords.isStemmedStopword(word))
-                            continue;
+                    if (Stopwords.isStemmedStopword(word))
+                        continue;
                     word = STEMMER.stem(word.toLowerCase());
-                    if(word.isEmpty())
+                    if (word.isEmpty())
                         continue;
                     int key = word.hashCode();
                     dict.putIfAbsent(key, new LinkedList<>());
                     try {
                         Word newWord = new Word(block, m.start(), m.end());
                         dict.get(key).add(newWord);
-                    }catch (IOException e){
+                    } catch (IOException e) {
                         System.out.println("Failed to read word to dict");
                     }
                 }

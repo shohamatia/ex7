@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 
 public class STmovieParsingRule implements IparsingRule, Serializable {
+    private static final String IN_SCENE = "Appearing in scene %s, titled \"%s\"";
+
     public static final long serialVersionUID = 1L;
 
     public STmovieParsingRule() {
@@ -24,55 +26,53 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
      * @param file - the entry file
      * @return list of all the blocks in the entry.
      */
-	private LinkedList<Block> getScene(RandomAccessFile file){
-		LinkedList<Block> blocks = new LinkedList<>();
-		String sceneNumber;
-		String sceneName;
-		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SCENE_EXTRACTOR);
-		final Matcher m = p.matcher(" ") ;
-		getSceneBlock(file, true);
-		String curBlock;
-		String nextBlock = getSceneBlock(file, false);
-		long curPointer = 0;
-		while (!Objects.requireNonNull(nextBlock).isEmpty()){
-			curBlock = nextBlock;
-			m.reset(curBlock);
-			if (m.find()){
-				sceneName = m.group("sceneName");
-				sceneNumber = m.group("sceneNumber");
-				Block block;
-				try {
-					block = new Block(file, curPointer + m.end(3) - 1, file.getFilePointer());
-					if (file.getFilePointer() >= file.length()){
-						throw new IllegalArgumentException();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-					continue;
-				}catch (IllegalArgumentException e){
-					break;
-				}
-				LinkedList<String> metadata = new LinkedList<>();
-				metadata.add("Appearing in scene " + sceneNumber + ", titled \"" + sceneName.replaceAll(" " +
-						"*$", "") + "\"");
-				metadata.add(getSpeakers(block.toString()));
-				block.setMetadata(metadata);
-				blocks.add(block);
-			}
-			try {
-				curPointer = file.getFilePointer();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			nextBlock = getSceneBlock(file, false);
-		}
-		return blocks;
-	}
+    private LinkedList<Block> getScene(RandomAccessFile file) {
+        LinkedList<Block> blocks = new LinkedList<>();
+        String sceneNumber;
+        String sceneName;
+        final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SCENE_EXTRACTOR);
+        final Matcher m = p.matcher(" ");
+        getSceneBlock(file, true);
+        String nextBlockText;
+        long pointer = 0;
+        do {
+            nextBlockText = getSceneBlock(file, false);
+            m.reset(nextBlockText);
+            if (!m.find()) {
+                continue;
+            }
+
+            Block block;
+            try {
+                block = new Block(file, pointer + m.end(3) - 1, file.getFilePointer());
+                pointer = file.getFilePointer();
+            } catch (IOException e) {
+                e.printStackTrace();
+                continue;
+            } catch (IllegalArgumentException e) {
+                break;
+            }
+            LinkedList<String> metadata = new LinkedList<>();
+
+            //add metadata
+            sceneName = m.group("sceneName");
+            sceneName = sceneName.replaceAll(" *$", "");
+            sceneNumber = m.group("sceneNumber");
+            metadata.add(String.format(IN_SCENE, sceneNumber, sceneName));
+            metadata.add(getSpeakers(block.toString()));
+            block.setMetadata(metadata);
+
+            blocks.add(block);
+
+        } while (!Objects.requireNonNull(nextBlockText).isEmpty());
+        return blocks;
+    }
 
 
     /**
      * finds the next block.
-     * @param file - the entry file
+     *
+     * @param file     - the entry file
      * @param metadata - deferments if to read the beginning of the file or not.
      * @return string of the block
      */
@@ -80,27 +80,27 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
         final Pattern sceneLine = Pattern.compile(parsingRuleRegex.SCENE_TITLE);
         final Matcher thisLine = sceneLine.matcher("");
         StringBuilder fileString = new StringBuilder();
-        int cunt = 0;
+        boolean readASceneOpenning = false;
         try {
             if (metadata) {
                 file.seek(0);
-                cunt = 1;
+                readASceneOpenning = true;
             }
             if (file.getFilePointer() == file.length() - 1) {
                 return null;
             }
             String nextLine = "";
-            String curLine;
-            while (cunt != 2 && file.getFilePointer() < file.length()) {
-                curLine = nextLine;
-                fileString.append(curLine).append("\n");
+
+            while (file.getFilePointer() < file.length()) {
+                fileString.append(nextLine).append("\n");
                 long curPointer = file.getFilePointer();
                 nextLine = file.readLine();
                 if (thisLine.reset(nextLine).find()) {
-                    if (cunt == 1) {
+                    if (readASceneOpenning) {
                         file.seek(curPointer);
+                        break;
                     }
-                    cunt += 1;
+                    readASceneOpenning = true;
                 }
             }
         } catch (IOException e) {
@@ -135,30 +135,30 @@ public class STmovieParsingRule implements IparsingRule, Serializable {
      * @param file - the entry file
      * @return string of all the characters in the scene.
      */
-	private String getSpeakers(String file){
-		LinkedList<String> getSpeaker = new LinkedList<>();
-		final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SPEAKER);
-		assert file != null;
-		final Matcher m = p.matcher(file);
-		while (m.find()){
-			if (!getSpeaker.contains("\"" + m.group().replaceAll("[^A-Z]*", "") + "\"")) {
-				getSpeaker.add("\"" + m.group().replaceAll("[^A-Z]*", "") + "\"");
-			}
-		}
-		StringBuilder builder = new StringBuilder();
-		for (String speaker : getSpeaker){
-			builder.append(speaker).append(", ");
-		}
-		String speakersString = builder.toString();
-		if (speakersString.length() > 2) {
-			if (speakersString.substring(speakersString.length() - 2).equals(", ")) {
-				speakersString = speakersString.substring(0, speakersString.length() - 2);
-			}
-		}
-		return "With the characters: " + speakersString;
-	}
+    private String getSpeakers(String file) {
+        LinkedList<String> getSpeaker = new LinkedList<>();
+        final Pattern p = Pattern.compile(parsingRuleRegex.MOVIE_SPEAKER);
+        assert file != null;
+        final Matcher m = p.matcher(file);
+        while (m.find()) {
+            if (!getSpeaker.contains("\"" + m.group().replaceAll("[^A-Z]*", "") + "\"")) {
+                getSpeaker.add("\"" + m.group().replaceAll("[^A-Z]*", "") + "\"");
+            }
+        }
+        StringBuilder builder = new StringBuilder();
+        for (String speaker : getSpeaker) {
+            builder.append(speaker).append(", ");
+        }
+        String speakersString = builder.toString();
+        if (speakersString.length() > 2) {
+            if (speakersString.substring(speakersString.length() - 2).equals(", ")) {
+                speakersString = speakersString.substring(0, speakersString.length() - 2);
+            }
+        }
+        return "With the characters: " + speakersString;
+    }
 
-	@Override
+    @Override
     public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) {
         return null;
     }

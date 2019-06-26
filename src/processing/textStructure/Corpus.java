@@ -32,7 +32,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
         File[] list = source.listFiles();
 
         if (list == null) {
-            throw new IllegalArgumentException("Error: received non directory source file");
+            list = new File[]{source};
         }
 
         recursiveFile(list);
@@ -59,7 +59,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
     /**
      * This method populates the Block lists for each Entry in the corpus.
      */
-    public void populate() throws FileNotFoundException{
+    public void populate() throws FileNotFoundException {
         for (Entry entry : this)
             entry.populate();
     }
@@ -120,7 +120,7 @@ public class Corpus implements Iterable<Entry>, Serializable {
      * Update the RandomAccessFile objects for the Entries in the corpus,
      * if it was loaded from cache.
      */
-    public void updateRAFs() throws FileNotFoundException{
+    public void updateRAFs() throws FileNotFoundException {
         for (Entry entry : entryList) {
             String path = entry.getPath();
             for (Block block : entry) {

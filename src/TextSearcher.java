@@ -47,8 +47,8 @@ public class TextSearcher {
         Aindexer<?> indexer = getIndexer(conf.getIndexType(), origin);
         try {
             indexer.index();
-        }catch (FileNotFoundException e){
-            System.out.println("File not found when indexing.");
+        } catch (IOException e) {
+            System.out.println("Error writing to index.");
         }
 
 

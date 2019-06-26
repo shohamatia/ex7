@@ -19,8 +19,8 @@ public class NaiveSearchRK extends NaiveSearch {
     @Override
     public List<WordResult> search(String query) {
         List<WordResult> results = new LinkedList<>();
-        for (Entry entry : this.origin){
-            for (Block block : entry){
+        for (Entry entry : this.origin) {
+            for (Block block : entry) {
                 searchBlock(block, results, query);
             }
         }
@@ -39,7 +39,7 @@ public class NaiveSearchRK extends NaiveSearch {
         long prime = getBiggerPrime(patternSize);
 
         long base = 1;
-	    for (int i = 0; i < patternSize - 1; i++) {
+        for (int i = 0; i < patternSize - 1; i++) {
             base *= 2;
             base = base % prime;
         }
@@ -49,7 +49,7 @@ public class NaiveSearchRK extends NaiveSearch {
 
         long pattenFP = 0;
 
-	    for (int j = 0; j < patternSize; j++) {
+        for (int j = 0; j < patternSize; j++) {
             rolLHashArr[0] = (2 * rolLHashArr[0] + text[j]) % prime;
             pattenFP = (2 * pattenFP + pattern[j]) % prime;
         }

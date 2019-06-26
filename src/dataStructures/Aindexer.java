@@ -10,6 +10,7 @@ import processing.textStructure.Corpus;
 import utils.WrongMD5ChecksumException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * The abstract class describing the necessary methods and common implementations of all indexing data structures.
@@ -39,7 +40,7 @@ public abstract class Aindexer<T extends IsearchStrategy> {
      * Main indexing method. Common implementation trying to read indexed cache file
      * This method can be edited, but is enough assuming the other methods are implemented well.
      */
-    public void index() throws FileNotFoundException{
+    public void index() throws IOException {
         try {
             readIndexedFile();
             this.origin.updateRAFs();
@@ -85,7 +86,7 @@ public abstract class Aindexer<T extends IsearchStrategy> {
     /**
      * Write the indernal index into file.
      */
-    protected abstract void writeIndexFile();
+    protected abstract void writeIndexFile() throws IOException;
 
 
     /**

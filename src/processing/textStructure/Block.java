@@ -28,7 +28,7 @@ public class Block implements Serializable {
         this.inputFile = inputFile;
         this.startIdx = startIdx;
         this.endIdx = endIdx;
-        if (startIdx < 0 || startIdx >= endIdx || endIdx >= inputFile.length())
+        if (startIdx < 0 || startIdx >= endIdx || endIdx > inputFile.length())
             throw new IllegalArgumentException("Tried to create block with illegal indices.");
     }
 
@@ -105,7 +105,7 @@ public class Block implements Serializable {
         return inputFile;
     }
 
-    void setRAF(String path) throws FileNotFoundException{
+    void setRAF(String path) throws FileNotFoundException {
         this.inputFile = new RandomAccessFile(path, "rw");
     }
 

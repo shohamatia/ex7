@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Alessandro Bahgat Shehata
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,22 +35,22 @@ import java.util.Collections;
  * The overall complexity of the retrieval operation (processing.searchStrategies) is O(m) where m is the length of the string to processing.searchStrategies within the index.
  *
  * Although the implementation is based on the original design by Ukkonen, there are a few aspects where it differs significantly.
- * 
+ *
  * The tree is composed of a set of nodes and labeled edges. The labels on the edges can have any length as long as it's greater than 0.
  * The only constraint is that no two edges going out from the same node will start with the same character.
- * 
+ *
  * Because of this, a given (startNode, stringSuffix) pair can denote a unique path within the tree, and it is the path (if any) that can be
  * composed by sequentially traversing all the edges (e1, e2, ...) starting from startNode such that (e1.label + e2.label + ...) is equal
  * to the stringSuffix.
  * See the processing.searchStrategies method for details.
- * 
+ *
  * The union of all the edge labels from the root to a given leaf node denotes the set of the strings explicitly contained within the GST.
  * In addition to those Strings, there are a set of different strings that are implicitly contained within the GST, and it is composed of
  * the strings built by concatenating e1.label + e2.label + ... + $end, where e1, e2, ... is a proper path and $end is prefix of any of
  * the labels of the edges starting from the last node of the path.
  *
  * This kind of "implicit path" is important in the testAndSplit method.
- *  
+ *
  */
 public class GeneralizedSuffixTree {
 
@@ -189,7 +189,7 @@ public class GeneralizedSuffixTree {
             Pair<Node, String> active = update(s, text, remainder.substring(i), index);
             // line 8: make sure the active pair is canonical
             active = canonize(active.getFirst(), active.getSecond());
-            
+
             s = active.getFirst();
             text = active.getSecond();
         }
@@ -207,7 +207,7 @@ public class GeneralizedSuffixTree {
      *     e1.label + e2.label + ... + $end = stringPart
      * and there is an edge g such that
      *     g.label = stringPart + rest
-     * 
+     *
      * Then g will be split in two different edges, one having $end as label, and the other one
      * having rest as label.
      *
@@ -219,7 +219,7 @@ public class GeneralizedSuffixTree {
      * @return a pair containing
      *                  true/false depending on whether (stringPart + t) is contained in the subtree starting in inputs
      *                  the last node that can be reached by following the path denoted by stringPart starting from inputs
-     *         
+     *
      */
     private Pair<Boolean, Node> testAndSplit(final Node inputs, final String stringPart, final char t, final String remainder, final int value) {
         // descend the tree as far as possible
@@ -317,7 +317,7 @@ public class GeneralizedSuffixTree {
 
     /**
      * Updates the tree starting from inputNode and by adding stringPart.
-     * 
+     *
      * Returns a reference (Node, String) pair for the string that has been added so far.
      * This means:
      * - the Node will be the Node that can be reached by the longest path string (S1)
@@ -325,7 +325,7 @@ public class GeneralizedSuffixTree {
      *   that is a substring of the string added so far to the tree.
      * - the String will be the remainder that must be added to S1 to get the string
      *   added so far.
-     * 
+     *
      * @param inputNode the node to start from
      * @param stringPart the string to add to the tree
      * @param rest the rest of the string

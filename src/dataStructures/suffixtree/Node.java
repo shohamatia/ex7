@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Alessandro Bahgat Shehata
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,11 +29,11 @@ class Node {
     /**
      * The payload array used to store the data (indexes) associated with this node.
      * In this case, it is used to store all property indexes.
-     * 
+     *
      * As it is handled, it resembles an ArrayList: when it becomes full it 
      * is copied to another bigger array (whose size is equals to data.length +
      * INCREMENT).
-     * 
+     *
      * Originally it was a List<Integer> but it took too much memory, changing
      * it to int[] take less memory because indexes are stored using native
      * types.
@@ -41,7 +41,7 @@ class Node {
     private int[] data;
     /**
      * Represents index of the last position used in the data int[] array.
-     * 
+     *
      * It should always be less than data.length
      */
     private int lastIdx = 0;
@@ -67,9 +67,9 @@ class Node {
      * The total number of <em>different</em> results that are stored in this
      * node and in underlying ones (i.e. nodes that can be reached through paths
      * starting from <tt>this</tt>.
-     * 
+     *
      * This must be calculated explicitly using computeAndCacheCount
-     * @see Node#computeAndCacheCount() 
+     * @see Node#computeAndCacheCount()
      */
     private int resultCount = -1;
 
@@ -95,7 +95,7 @@ class Node {
      *
      * Gets data from the payload of both this node and its children, the string representation
      * of the path to this node is a substring of the one of the children nodes.
-     * 
+     *
      * @param numElements the number of results to return. Use -1 to get all
      * @return the first <tt>numElements</tt> associated to this node and children
      */
@@ -145,9 +145,9 @@ class Node {
 
     /**
      * Tests whether a node contains a reference to the given index.
-     * 
+     *
      * <b>IMPORTANT</b>: it works because the array is sorted by construction
-     * 
+     *
      * @param index the index to look for
      * @return true <tt>this</tt> contains a reference to index
      */
@@ -160,11 +160,11 @@ class Node {
             int midVal = data[mid];
 
             if (midVal < index)
-            low = mid + 1;
+                low = mid + 1;
             else if (midVal > index)
-            high = mid - 1;
+                high = mid - 1;
             else
-            return true;
+                return true;
         }
         return false;
         // Java 5 equivalent to
@@ -174,7 +174,7 @@ class Node {
     /**
      * Computes the number of results that are stored on this node and on its
      * children, and caches the result.
-     * 
+     *
      * Performs the same operation on subnodes as well
      * @return the number of results
      */
@@ -202,10 +202,10 @@ class Node {
      * Returns the number of results that are stored on this node and on its
      * children.
      * Should be called after having called computeAndCacheCount.
-     * 
+     *
      * @throws IllegalStateException when this method is called without having called
      * computeAndCacheCount first
-     * @see Node#computeAndCacheCount() 
+     * @see Node#computeAndCacheCount()
      * @todo this should raise an exception when the subtree is changed but count
      * wasn't updated
      */

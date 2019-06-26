@@ -12,57 +12,57 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleParsingRule implements IparsingRule, Serializable {
-	public static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 1L;
 
-	public SimpleParsingRule() {
+    public SimpleParsingRule() {
 
     }
 
-	@Override
-	public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) throws IOException {
+    @Override
+    public Block parseRawBlock(RandomAccessFile inputFile, long startPos, long endPos) throws IOException {
 
-		return new Block(inputFile, startPos, endPos);
-	}
+        return new Block(inputFile, startPos, endPos);
+    }
 
-	@Override
-	public List<Block> parseFile(RandomAccessFile inputFile) {
+    @Override
+    public List<Block> parseFile(RandomAccessFile inputFile) {
 
-		final Pattern p = Pattern.compile(getSplitRegex(), Pattern.DOTALL);
-		final Matcher m = p.matcher("");
+        final Pattern p = Pattern.compile(getSplitRegex(), Pattern.DOTALL);
+        final Matcher m = p.matcher("");
 
-		List<Block> entryBlocks = new LinkedList<>();
-		int rawChunkSize = MAXLINELENGTH * 15;
-		byte[] rawBytes = new byte[rawChunkSize];
-		try {
-			long endOfBlockOffset = 0;
-			long lastIndex = inputFile.length();
-			for (long i = endOfBlockOffset; i < lastIndex - rawChunkSize; i += rawChunkSize) {
-				inputFile.seek(i);
-				inputFile.read(rawBytes);
-				String rawBlock = new String(rawBytes);
-				m.reset(rawBlock);
-				while (m.find()) {
-					if (m.end()- m.start() > 1) {
-						entryBlocks.add(parseRawBlock(inputFile, m.start() + i, m.end() + i));
-					}
-					endOfBlockOffset = m.end();
-				}
-				i -= (rawChunkSize - endOfBlockOffset);
-			}
+        List<Block> entryBlocks = new LinkedList<>();
+        int rawChunkSize = MAXLINELENGTH * 15;
+        byte[] rawBytes = new byte[rawChunkSize];
+        try {
+            long endOfBlockOffset = 0;
+            long lastIndex = inputFile.length();
+            for (long i = endOfBlockOffset; i < lastIndex - rawChunkSize; i += rawChunkSize) {
+                inputFile.seek(i);
+                inputFile.read(rawBytes);
+                String rawBlock = new String(rawBytes);
+                m.reset(rawBlock);
+                while (m.find()) {
+                    if (m.end() - m.start() > 1) {
+                        entryBlocks.add(parseRawBlock(inputFile, m.start() + i, m.end() + i));
+                    }
+                    endOfBlockOffset = m.end();
+                }
+                i -= (rawChunkSize - endOfBlockOffset);
+            }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return entryBlocks;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return entryBlocks;
 
-	}
+    }
 
-	@Override
-	public void printResult(WordResult wordResult) throws IOException {
-		System.out.println("The result: \n" +wordResult.resultToString());
-	}
+    @Override
+    public void printResult(WordResult wordResult) throws IOException {
+        System.out.println("The result: \n" + wordResult.resultToString());
+    }
 
-	private String getSplitRegex() {
-		return "(.*(\\n|\\r\\n|\\r){2}){1,5}";
-	}
+    private String getSplitRegex() {
+        return "(.*(\\n|\\r\\n|\\r){2}){1,5}";
+    }
 }

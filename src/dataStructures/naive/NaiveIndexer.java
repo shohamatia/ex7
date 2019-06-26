@@ -14,56 +14,57 @@ import java.io.FileNotFoundException;
  */
 public class NaiveIndexer extends Aindexer<NaiveSearch> {
 
-	public static final IndexTypes TYPE_NAME = IndexTypes.NAIVE;
-	private final boolean isRK;
+    public static final IndexTypes TYPE_NAME = IndexTypes.NAIVE;
+    private final boolean isRK;
 
-	/**
-	 * Basic constructor
-	 * @param corpus    The corpus to search over
-	 * @param RK        Whether or not to use Rabin-Karp search strategy
-	 */
-	public NaiveIndexer(Corpus corpus, boolean RK){
-		super(corpus);
-		this.isRK = RK;
-	}
-
-
-	public NaiveIndexer(Corpus corpus) {
-		super(corpus);
-		this.isRK = false;
-	}
-
-	@Override
-	protected void indexCorpus() {
-		// does nothing
-	}
-
-	@Override
-	protected void readIndexedFile() throws FileNotFoundException {
-		throw new FileNotFoundException();
-	}
-
-	@Override
-	protected void writeIndexFile() {
-		//does nothing
-	}
+    /**
+     * Basic constructor
+     *
+     * @param corpus The corpus to search over
+     * @param RK     Whether or not to use Rabin-Karp search strategy
+     */
+    public NaiveIndexer(Corpus corpus, boolean RK) {
+        super(corpus);
+        this.isRK = RK;
+    }
 
 
-	public Corpus getOrigin() {
-		return this.origin;
-	}
+    public NaiveIndexer(Corpus corpus) {
+        super(corpus);
+        this.isRK = false;
+    }
+
+    @Override
+    protected void indexCorpus() {
+        // does nothing
+    }
+
+    @Override
+    protected void readIndexedFile() throws FileNotFoundException {
+        throw new FileNotFoundException();
+    }
+
+    @Override
+    protected void writeIndexFile() {
+        //does nothing
+    }
 
 
-	@Override
-	public IparsingRule getParseRule() {
-		return this.origin.getParsingRule();
-	}
+    public Corpus getOrigin() {
+        return this.origin;
+    }
 
 
-	@Override
-	public NaiveSearch asSearchInterface() {
-		return this.isRK ? new NaiveSearchRK(this.origin) : new NaiveSearch(this.origin);
-	}
+    @Override
+    public IparsingRule getParseRule() {
+        return this.origin.getParsingRule();
+    }
+
+
+    @Override
+    public NaiveSearch asSearchInterface() {
+        return this.isRK ? new NaiveSearchRK(this.origin) : new NaiveSearch(this.origin);
+    }
 
 
 }

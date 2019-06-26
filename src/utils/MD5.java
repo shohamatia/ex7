@@ -10,11 +10,11 @@ import java.security.NoSuchAlgorithmException;
 public class MD5 {
     /**
      * Get an MD5 checksum from an input string.
+     *
      * @param input - the string to calculate a checksum for.
      * @return - String object representing the checksum.
      */
-    public static String getMd5(String input)
-    {
+    public static String getMd5(String input) {
         try {
 
             // Static getInstance method is called with hashing utils.MD5
@@ -43,11 +43,11 @@ public class MD5 {
 
     /**
      * Get an MD5 checksum from an input byte array.
+     *
      * @param inputBytes - the array of bytes to calculate a checksum from.
      * @return - an output String object representing the checksum.
      */
-    public static String getMd5(byte[] inputBytes)
-    {
+    public static String getMd5(byte[] inputBytes) {
         try {
 
             // Static getInstance method is called with hashing utils.MD5

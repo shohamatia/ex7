@@ -58,8 +58,7 @@ public class DictionarySearch implements IsearchStrategy {
                 }
                 MultiWordResult multiWordResult;
                 try {
-                    multiWordResult = new MultiWordResult(
-                            queryWords, block, locs);
+                    multiWordResult = new MultiWordResult(queryWords, block, locs);
                 } catch (IllegalArgumentException e) {
                     continue;
                 }

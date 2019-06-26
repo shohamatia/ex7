@@ -126,16 +126,16 @@ public class Stemmer {
         }
     }
 
-   /* m() measures the number of consonant sequences between 0 and j. if c is
-      a consonant sequence and v a vowel sequence, and <..> indicates arbitrary
-      presence,
+    /* m() measures the number of consonant sequences between 0 and j. if c is
+       a consonant sequence and v a vowel sequence, and <..> indicates arbitrary
+       presence,
 
-         <c><v>       gives 0
-         <c>vc<v>     gives 1
-         <c>vcvc<v>   gives 2
-         <c>vcvcvc<v> gives 3
-         ....
-   */
+          <c><v>       gives 0
+          <c>vc<v>     gives 1
+          <c>vcvc<v>   gives 2
+          <c>vcvcvc<v> gives 3
+          ....
+    */
     private final int m() {
         int n = 0;
         int i = 0;
@@ -176,14 +176,14 @@ public class Stemmer {
         return cons(j);
     }
 
-   /* cvc(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
-      and also if the second c is not w,x or y. this is used when trying to
-      restore an e at the end of a short word. e.g.
+    /* cvc(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
+       and also if the second c is not w,x or y. this is used when trying to
+       restore an e at the end of a short word. e.g.
 
-         cav(e), lov(e), hop(e), crim(e), but
-         snow, box, tray.
+          cav(e), lov(e), hop(e), crim(e), but
+          snow, box, tray.
 
-   */
+    */
     private final boolean cvc(int i) {
         if (i < 2 || !cons(i) || cons(i - 1) || !cons(i - 2)) return false;
         {
@@ -202,8 +202,8 @@ public class Stemmer {
         return true;
     }
 
-   /* setto(s) sets (j+1),...k to the characters in the string s, readjusting
-      k. */
+    /* setto(s) sets (j+1),...k to the characters in the string s, readjusting
+       k. */
     private final void setto(String s) {
         int l = s.length();
         int o = j + 1;
@@ -216,27 +216,27 @@ public class Stemmer {
         if (m() > 0) setto(s);
     }
 
-   /* step1() gets rid of plurals and -ed or -ing. e.g.
+    /* step1() gets rid of plurals and -ed or -ing. e.g.
 
-          caresses  ->  caress
-          ponies    ->  poni
-          ties      ->  ti
-          caress    ->  caress
-          cats      ->  cat
+           caresses  ->  caress
+           ponies    ->  poni
+           ties      ->  ti
+           caress    ->  caress
+           cats      ->  cat
 
-          feed      ->  feed
-          agreed    ->  agree
-          disabled  ->  disable
+           feed      ->  feed
+           agreed    ->  agree
+           disabled  ->  disable
 
-          matting   ->  mat
-          mating    ->  mate
-          meeting   ->  meet
-          milling   ->  mill
-          messing   ->  mess
+           matting   ->  mat
+           mating    ->  mate
+           meeting   ->  meet
+           milling   ->  mill
+           messing   ->  mess
 
-          meetings  ->  meet
+           meetings  ->  meet
 
-   */
+    */
     private final void step1() {
         if (b[k] == 's') {
             if (ends("sses")) k -= 2;
@@ -265,9 +265,9 @@ public class Stemmer {
         if (ends("y") && vowelinstem()) b[k] = 'i';
     }
 
-   /* step3() maps double suffices to single ones. so -ization ( = -ize plus
-      -ation) maps to -ize etc. note that the string before the suffix must give
-      m() > 0. */
+    /* step3() maps double suffices to single ones. so -ization ( = -ize plus
+       -ation) maps to -ize etc. note that the string before the suffix must give
+       m() > 0. */
     private final void step3() {
         if (k == 0) return; /* For Bug 1 */
         switch (b[k - 1]) {
@@ -503,11 +503,12 @@ public class Stemmer {
 
     /**
      * Stem word "s" to its base form
+     *
      * @param s the word to stem
      * @return a String object representing the stemmed word.
      */
     public String stem(String s) {
-        s = s.replaceAll("[.,:'\"]","");
+        s = s.replaceAll("[.,:'\"]", "");
         for (char c : s.toCharArray()) {
             add(c);
         }

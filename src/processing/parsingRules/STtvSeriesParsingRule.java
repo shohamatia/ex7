@@ -23,7 +23,7 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
         return null;
     }
 
-    private LinkedList<Block> getScene(RandomAccessFile file) throws IOException {
+    private LinkedList<Block> getScenes(RandomAccessFile file) throws IOException {
         LinkedList<Block> blocks = new LinkedList<>();
         String sceneNumber;
         String sceneName;
@@ -142,7 +142,7 @@ public class STtvSeriesParsingRule implements IparsingRule, Serializable {
 
     public List<Block> parseFile(RandomAccessFile inputFile) {
         try {
-            return getScene(inputFile);
+            return getScenes(inputFile);
         } catch (IOException e) {
             System.out.println("Failed to parse file");
             return new LinkedList<>();

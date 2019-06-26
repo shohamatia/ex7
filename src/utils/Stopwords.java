@@ -12,38 +12,40 @@ public class Stopwords {
 
     /**
      * check if a word is a stop word
+     *
      * @param word the word to check
-     * @return  true if the word is shorter than 2 chars, or if it's a number, or if it is included in the stop-word list
+     * @return true if the word is shorter than 2 chars, or if it's a number, or if it is included in the stop-word list
      */
     public static boolean isStopword(String word) {
-        if(word.length() < 2) return true;
-        if(word.charAt(0) >= '0' && word.charAt(0) <= '9') return true; //remove numbers, "25th", etc
+        if (word.length() < 2) return true;
+        if (word.charAt(0) >= '0' && word.charAt(0) <= '9') return true; //remove numbers, "25th", etc
         return stopWordSet.contains(word);
     }
 
     /**
      * check if a word is a stop word
+     *
      * @param word the word to check
-     * @return  true if the word is shorter than 2 chars, or if it's a number, or:
+     * @return true if the word is shorter than 2 chars, or if it's a number, or:
      * if it is included in the stemmed-stop-word list, or if it's stemmed version is in the regular or stemmed lists.
      */
     public static boolean isStemmedStopword(String word) {
-        if(word.length() < 2) return true;
-        if(word.charAt(0) >= '0' && word.charAt(0) <= '9') return true; //remove numbers, "25th", etc
+        if (word.length() < 2) return true;
+        if (word.charAt(0) >= '0' && word.charAt(0) <= '9') return true; //remove numbers, "25th", etc
         String stemmed = stemString(word);
-        if(stopWordSet.contains(stemmed)) return true;
-        if(stemmedStopWordSet.contains(stemmed)) return true;
-        if(stopWordSet.contains(word)) return true;
+        if (stopWordSet.contains(stemmed)) return true;
+        if (stemmedStopWordSet.contains(stemmed)) return true;
+        if (stopWordSet.contains(word)) return true;
         return stemmedStopWordSet.contains(word);
     }
 
     public static String removeStopWords(String string) {
         String result = "";
         String[] words = string.split("\\s+");
-        for(String word : words) {
-            if(word.isEmpty()) continue;
-            if(isStopword(string)) continue; //remove stopwords
-            result += (word+" ");
+        for (String word : words) {
+            if (word.isEmpty()) continue;
+            if (isStopword(string)) continue; //remove stopwords
+            result += (word + " ");
         }
         return result;
     }
@@ -51,11 +53,11 @@ public class Stopwords {
     public static String removeStemmedStopWords(String string) {
         String result = "";
         String[] words = string.split("\\s+");
-        for(String word : words) {
-            if(word.isEmpty()) continue;
-            if(isStemmedStopword(word)) continue;
-            if(word.charAt(0) >= '0' && word.charAt(0) <= '9') continue; //remove numbers, "25th", etc
-            result += (word+" ");
+        for (String word : words) {
+            if (word.isEmpty()) continue;
+            if (isStemmedStopword(word)) continue;
+            if (word.charAt(0) >= '0' && word.charAt(0) <= '9') continue; //remove numbers, "25th", etc
+            result += (word + " ");
         }
         return result;
     }
@@ -67,7 +69,7 @@ public class Stopwords {
     public static Set<String> stemStringSet(Set<String> stringSet) {
         Stemmer stemmer = new Stemmer();
         Set<String> results = new HashSet<String>();
-        for(String string : stringSet) {
+        for (String string : stringSet) {
             results.add(stemmer.stem(string));
         }
         return results;

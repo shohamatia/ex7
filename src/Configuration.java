@@ -19,10 +19,10 @@ public class Configuration {
     private final static String CORPUS = "CORPUS";
     private final static String INDEXER = "INDEXER";
     private static HashMap<String, Aindexer.IndexTypes> indexTypesHashMap =
-            new HashMap<String,Aindexer.IndexTypes>() {{
-        for (Aindexer.IndexTypes AnIndexType : Aindexer.IndexTypes.values())
-            put(AnIndexType.toString(), AnIndexType);
-    }};
+            new HashMap<String, Aindexer.IndexTypes>() {{
+                for (Aindexer.IndexTypes AnIndexType : Aindexer.IndexTypes.values())
+                    put(AnIndexType.toString(), AnIndexType);
+            }};
     private final static String PARSE_RULE = "PARSE_RULE";
     private static HashMap<String, IparsingRule.ParserTypes> parserTypesHashMap = new HashMap<String,
             IparsingRule.ParserTypes>() {{

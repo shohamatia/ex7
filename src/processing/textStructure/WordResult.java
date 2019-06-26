@@ -75,7 +75,7 @@ public class WordResult {
         long fullStartLoc = this.idxInBlk + this.location.getStartIndex();
         RandomAccessFile raf = this.location.getRAF();
         raf.seek(fullStartLoc);
-        while (raf.getFilePointer() < endLoc +this.location.getStartIndex())
+        while (raf.getFilePointer() < endLoc + this.location.getStartIndex())
             representation.append("\n").append(raf.readLine());
         for (String datum : metaData) {
             if (datum.isEmpty())
